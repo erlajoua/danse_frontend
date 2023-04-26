@@ -1,8 +1,10 @@
 // pages/Home.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
+import { api } from '../services/api'
+import axios from 'axios';
 import './Home.css'
 
 const Home: React.FC = () => {
@@ -15,17 +17,25 @@ const Home: React.FC = () => {
   const [lastName, setLastName] = useState('');
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token)
+      navigate('/cours');
+  }, [])
+
   const fakeAPICall = async (email: string): Promise<boolean> => {
     // Simule un appel d'API avec une réponse aléatoire (succès ou échec)
     return new Promise((resolve) => setTimeout(() => resolve(Math.random() > 0), 1000));
   };
 
   const HandleSubmitSignin = () => {
-	const success = true;
 
-	if (success) {
-		navigate('/cours');
-	}
+    api.post('/users/signin', {email, password}).then((res) => {
+      localStorage.setItem('token', res.data.token);
+      navigate('/cours');
+    }).catch(err => {
+      alert('Email or password incorrect');
+    })
   }
 
   const handleSubmitEmail = async () => {

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { CoursCardProps } from '../shared/interfaces';
 import CoursCard from '../components/CoursCard';
 import { AppBar, Toolbar, Typography, Button } from '@mui/material';
+import { api } from '../services/api'
 import './Cours.css';
 
 const Cours = () => {
@@ -11,7 +12,7 @@ const Cours = () => {
 
   const fetchCours = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/cours`);
+      const response = await api.get(`/cours`);
       const data = response.data;
       console.log('data = ', data);
       setCours(data);
@@ -38,6 +39,7 @@ const Cours = () => {
         {cours.map((cour, index) => (
           <div key={index}>
             <CoursCard
+              id={cour._id}
               style={cour.style}
               jsemaine={cour.jsemaine}
               jour={cour.jour}

@@ -3,6 +3,8 @@ export type {
 }
 
 interface CoursCardProps {
+	id?: string;
+	_id?: string;
 	style: string;
 	jsemaine: string;
 	jour: string;
@@ -10,6 +12,6 @@ interface CoursCardProps {
 	heure: string;
 	duree: string;
 	niveau: string;
-	prix: string;
+	prix?: string;
 	restplace: string;
 }

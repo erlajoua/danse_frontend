@@ -4,8 +4,11 @@ import EventIcon from '@mui/icons-material/Event';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { CoursCardProps } from '../shared/interfaces';
+import { api } from '../services/api'
+import axios from 'axios';
 
 const CoursCard: React.FC<CoursCardProps> = ({
+  id,
   style,
   jsemaine,
   jour,
@@ -23,6 +26,15 @@ const CoursCard: React.FC<CoursCardProps> = ({
 
   const toggleInscription = () => {
     setInscrit(!inscrit);
+    if (!inscrit) {
+      api.post('/enroll/add', {idcours: id }).then(() => {
+        console.log("success");
+      })
+    } else {
+      api.post('/enroll/delete', { idcours: id}).then(() => {
+        console.log("success");
+      })
+    }
   };
 
   const isComplet = Number(restplace) === 0;
@@ -55,7 +67,9 @@ const CoursCard: React.FC<CoursCardProps> = ({
   };
 
   const handleConfirmSupprimer = () => {
-    console.log('Supprimer');
+    api.post('/cours/delete', {idcours: id}).then(() => {
+      console.log("success cours deleted");
+    })
     setOpenDialog(false);
   };
 
@@ -132,7 +146,7 @@ mt: 2,
 </Box>
 <Box sx={{ textAlign: 'right' }}>
 <Typography variant="subtitle2">
-  {isComplet ? 'Complet' : `${restplace} places restantes`}
+  {isComplet ? '' : `${restplace} places restantes`}
 </Typography>
 <Button
 variant="contained"
