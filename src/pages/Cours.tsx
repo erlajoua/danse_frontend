@@ -29,10 +29,7 @@ const Cours = () => {
 	}
 
   useEffect(() => {
-    console.log('process = ', process.env.REACT_APP_API_URL);
     fetchCours();
-
-    console.log("SOKCET IN USEEFFECT = ", socket);
 
     socket.on('updateCoursList', () => {
       console.log("okkk");
@@ -59,6 +56,7 @@ const Cours = () => {
               niveau={cour.niveau}
               prix={cour.prix}
               restplace={cour.restplace}
+              isEnrolled={cour.isEnrolled}
             />
           </div>
         ))}

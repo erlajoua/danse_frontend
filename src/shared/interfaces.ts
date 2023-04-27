@@ -15,6 +15,7 @@ interface CoursCardProps {
 	niveau: string;
 	prix?: string;
 	restplace: string;
+	isEnrolled: boolean;
 }
 
 interface IHeaderOptions {
