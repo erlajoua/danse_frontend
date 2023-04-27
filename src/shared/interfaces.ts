@@ -1,5 +1,6 @@
 export type {
-	CoursCardProps
+	CoursCardProps,
+	IHeaderOptions
 }
 
 interface CoursCardProps {
@@ -14,4 +15,9 @@ interface CoursCardProps {
 	niveau: string;
 	prix?: string;
 	restplace: string;
+}
+
+interface IHeaderOptions {
+	list: boolean;
+	addCours: boolean;
 }

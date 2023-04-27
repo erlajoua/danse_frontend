@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { CoursCardProps } from '../shared/interfaces';
+import { useEffect, useState, useContext } from 'react';
+import { CoursCardProps, IHeaderOptions } from '../shared/interfaces';
 import CoursCard from '../components/CoursCard';
-import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 import { api } from '../services/api'
 import './Cours.css';
+import AdminHeader from '../components/AdminHeader'
+import { Context } from '../contexts/store'
 
 const Cours = () => {
   const [cours, setCours] = useState<Array<CoursCardProps>>([]);
   const [admin, setAdmin] = useState(true);
+  const context = useContext(Context);
+  const { socket }  = context;
 
   const fetchCours = async () => {
     try {
@@ -21,19 +23,27 @@ const Cours = () => {
     }
   };
 
+	const options: IHeaderOptions = {
+		'list': false,
+		'addCours': true
+	}
+
   useEffect(() => {
     console.log('process = ', process.env.REACT_APP_API_URL);
     fetchCours();
+
+    console.log("SOKCET IN USEEFFECT = ", socket);
+
+    socket.on('updateCoursList', () => {
+      console.log("okkk");
+      fetchCours();
+    })
   }, []);
 
   return (
     <div className="body w-full flex flex-col items-center justify-center">
       {admin && (
-        <AppBar position="static" sx={{ marginBottom: 3 }}>
-          <Toolbar>
-            <Button color="inherit">Ajouter un cours</Button>
-          </Toolbar>
-        </AppBar>
+        <AdminHeader options={options} />
       )}
       <div className="flex flex-wrap gap-4">
         {cours.map((cour, index) => (

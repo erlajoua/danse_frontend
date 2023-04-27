@@ -5,7 +5,6 @@ import ScheduleIcon from '@mui/icons-material/Schedule';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { CoursCardProps } from '../shared/interfaces';
 import { api } from '../services/api'
-import axios from 'axios';
 
 const CoursCard: React.FC<CoursCardProps> = ({
   id,
@@ -74,7 +73,7 @@ const CoursCard: React.FC<CoursCardProps> = ({
   };
 
   return (
-    <Card sx={{ width: 450, mt: 3, borderRadius: '12px', boxShadow: 0 }}>
+    <Card sx={{ width: 450, height: 198, mt: 3, borderRadius: '12px', boxShadow: 0 }}>
       <CardContent>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant="h5" gutterBottom>
