@@ -16,7 +16,6 @@ const Cours = () => {
     try {
       const response = await api.get(`/cours`);
       const data = response.data;
-      console.log('data = ', data);
       setCours(data);
     } catch (error) {
       console.error('Erreur lors de la récupération des cours:', error);
@@ -32,13 +31,12 @@ const Cours = () => {
     fetchCours();
 
     socket.on('updateCoursList', () => {
-      console.log("okkk");
       fetchCours();
     })
   }, []);
 
   return (
-    <div className="body w-full flex flex-col items-center justify-center">
+    <div className="body w-full flex flex-col items-center">
       {admin && (
         <AdminHeader options={options} />
       )}
