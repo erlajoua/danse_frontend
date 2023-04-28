@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Card, CardContent, Typography, Button, Box, Chip, IconButton, Menu, MenuItem } from '@mui/material';
 import EventIcon from '@mui/icons-material/Event';
 import ScheduleIcon from '@mui/icons-material/Schedule';
@@ -6,9 +6,9 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { CoursCardProps } from '../shared/interfaces';
 import DeleteModal from './DeleteModal'
 import DetailsModal from './DetailsModal'
-
+import { STYLES } from '../shared/interfaces'
+import { Context } from '../contexts/store'
 import { api } from '../services/api';
-import { Dialog, Transition } from '@headlessui/react';
 
 const CoursCard: React.FC<CoursCardProps> = ({
   id,
@@ -27,22 +27,29 @@ const CoursCard: React.FC<CoursCardProps> = ({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [openDialogDetails, setOpenDialogDetails] = useState(false);
   const [openDialogDelete, setOpenDialogDelete] = useState(false);
-  const [coursDetails, setCoursDetails] = useState<any>(null); // Utilisez le type de données approprié pour les détails du cours
-  const admin = true;
+  const [coursDetails, setCoursDetails] = useState<any>(null);
+  const { token, admin } = useContext(Context);
 
   const toggleInscription = () => {
     setInscrit(prev => !prev);
+    try {
+
     if (!inscrit) {
-      api.post('/enroll/add', {idcours: id }).then(() => {
+      api.post('/enroll/add', token , {idcours: id }).then(() => {
         console.log("success");
       })
     } else {
-      api.post('/enroll/delete', { idcours: id}).then(() => {
+      api.post('/enroll/delete', token, { idcours: id}).then(() => {
         console.log("success");
       })
     }
+  }
+  catch {
+    setInscrit(prev => !prev)
+  }
   };
 
+  //to remove
   const isComplet = Number(restplace) === 0;
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -54,7 +61,7 @@ const CoursCard: React.FC<CoursCardProps> = ({
   };
 
   const handleDetails = () => {
-    api.get(`/cours/${id}`).then((response) => {
+    api.get(`/cours/${id}`, token).then((response) => {
       setCoursDetails(response.data);
       setOpenDialogDetails(true);
       handleClose();
@@ -73,7 +80,7 @@ const CoursCard: React.FC<CoursCardProps> = ({
   };
 
   const handleConfirmSupprimer = () => {
-    api.post('/cours/delete', {idcours: id}).then(() => {
+    api.post('/cours/delete', token, {idcours: id}).then(() => {
       console.log("success cours deleted");
     })
     setOpenDialogDelete(false);
@@ -81,11 +88,11 @@ const CoursCard: React.FC<CoursCardProps> = ({
 
   return (
     <>
-      <Card sx={{ width: 450, height: 198, mt: 3, borderRadius: '12px', boxShadow: 0 }}>
+      <Card sx={{ width: 450, height: 198, mt: 3, borderRadius: '12px', boxShadow: 0, display: 'flex', justifyContent: 'flex-start', flexDirection: 'column' }}>
         <CardContent>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <Typography variant="h5" gutterBottom>
-              {style}
+              {STYLES[style]}
             </Typography>
             {admin && (
               <>
@@ -105,7 +112,8 @@ const CoursCard: React.FC<CoursCardProps> = ({
           </>
         )}
       </Box>
-      <Chip label={niveau} sx={{ mt: -1, mb: 2 }} />
+      { niveau && <Chip label={niveau} sx={{ mt: -1, mb: 2 }} />}
+      { prix?.toString() !== "0" && <Chip label={`${prix}€`} sx={{ mt: -1, mb: 2 }} />}
       <Box
         sx={{
           display: 'flex',

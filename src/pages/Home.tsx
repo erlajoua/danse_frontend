@@ -1,11 +1,10 @@
 // pages/Home.tsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../services/api'
-import axios from 'axios';
-import './Home.css'
+import { Context  } from '../contexts/store'
 
 const Home: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -16,9 +15,9 @@ const Home: React.FC = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const navigate = useNavigate();
+  const { setToken, setAdmin, token } = useContext(Context);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
     if (token)
       navigate('/cours');
   }, [])
@@ -30,8 +29,10 @@ const Home: React.FC = () => {
 
   const HandleSubmitSignin = () => {
 
-    api.post('/users/signin', {email, password}).then((res) => {
-      localStorage.setItem('token', res.data.token);
+    api.post('/users/signin', token, {email, password}).then((res) => {
+      setToken(res.data.token);
+      if (res.data.admin === 1)
+        setAdmin(true);
       navigate('/cours');
     }).catch(err => {
       alert('Email or password incorrect');
@@ -130,7 +131,6 @@ const Home: React.FC = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
 			  sx={{ mt: 3, minWidth: 280 }}
 			  />
-			  {/* Ajoutez ici la fonction d'inscription */}
 			  <Button variant="contained" color="primary" sx={{ mt: 3 }}>
 				S'inscrire
 			  </Button>

@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Typography, Button } from '@mui/material';
+import { AppBar, Toolbar, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { IHeaderOptions } from '../shared/interfaces'
 

@@ -8,13 +8,11 @@ import { Context } from '../contexts/store'
 
 const Cours = () => {
   const [cours, setCours] = useState<Array<CoursCardProps>>([]);
-  const [admin, setAdmin] = useState(true);
-  const context = useContext(Context);
-  const { socket }  = context;
+  const { socket, token, admin } = useContext(Context);
 
   const fetchCours = async () => {
     try {
-      const response = await api.get(`/cours`);
+      const response = await api.get(`/cours`, token);
       const data = response.data;
       setCours(data);
     } catch (error) {

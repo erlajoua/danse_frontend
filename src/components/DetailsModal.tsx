@@ -3,6 +3,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import EventIcon from '@mui/icons-material/Event';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import { Chip } from '@mui/material'
+import { STYLES } from '../shared/interfaces';
 
 const DetailsModal = ({ isOpen, setIsOpen, coursDetails}: {isOpen: any, setIsOpen: any, coursDetails: any}) => {
 	return (
@@ -41,10 +42,10 @@ const DetailsModal = ({ isOpen, setIsOpen, coursDetails}: {isOpen: any, setIsOpe
 
 				  <div className="bg-white rounded-lg  z-[10000] overflow-hidden max-w-lg w-full opacity-100">
           <div className="rounded-sm mt-2 p-2 flex justify-between items-center">
-            <span>{coursDetails?.style}</span>
+            <span>{STYLES[coursDetails?.style]}</span>
           </div>
           <div>
-			<Chip label={coursDetails?.niveau} sx={{ mb: 2 }} />
+			    { coursDetails?.niveau && <Chip label={coursDetails?.niveau} sx={{ mb: 2 }} /> }
             <span>
               <div>
                 <EventIcon fontSize="small" />

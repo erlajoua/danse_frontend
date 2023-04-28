@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
 class Api {
   private axiosInstance: AxiosInstance;
@@ -9,8 +9,7 @@ class Api {
     });
   }
 
-  private addBearerToken(config?: AxiosRequestConfig): AxiosRequestConfig | undefined {
-    const token = localStorage.getItem('token');
+  private addBearerToken(token: string | null, config?: AxiosRequestConfig): AxiosRequestConfig | undefined {
     if (token) {
       return {
         ...config,
@@ -23,25 +22,23 @@ class Api {
     return config;
   }
 
-  public async get<T>(url: string, config?: AxiosRequestConfig): Promise<any> {
+  public async get<T>(url: string, token: string | null, config?: AxiosRequestConfig): Promise<any> {
     try {
-      const response = await this.axiosInstance.get<T>(url, this.addBearerToken(config));
+      const response = await this.axiosInstance.get<T>(url, this.addBearerToken(token, config));
       return response;
     } catch (error) {
       throw error;
     }
   }
 
-  public async post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<any> {
+  public async post<T>(url: string, token: string | null, data?: any, config?: AxiosRequestConfig): Promise<any> {
     try {
-      const response = await this.axiosInstance.post<T>(url, data, this.addBearerToken(config));
+      const response = await this.axiosInstance.post<T>(url, data, this.addBearerToken(token, config));
       return response;
     } catch (error) {
       throw error;
     }
   }
-
-
 }
 
 export const api = new Api();
