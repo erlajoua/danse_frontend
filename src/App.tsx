@@ -7,7 +7,9 @@ import { Context } from './contexts/store'
 import Home from './pages/Home';
 import Cours from './pages/Cours';
 import AddCours from './pages/AddCours';
+import EditCours from './pages/EditCours';
 import { api } from './services/api';
+import UserAccount from './pages/UserAccount';
 
 const theme = createTheme({
   palette: {
@@ -55,6 +57,8 @@ const App: React.FC = () => {
             <Route path="/" element={<Home />} />
             <Route path="/addCours" element={<AddCours />} />
             <Route path="/cours" element={<Cours />} />
+            <Route path="/editCours" element={<EditCours />} />
+            <Route path="/account" element={<UserAccount />} />
           </Routes>
         </Context.Provider>
       </BrowserRouter>

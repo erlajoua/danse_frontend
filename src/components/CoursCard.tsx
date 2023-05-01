@@ -9,6 +9,7 @@ import DetailsModal from './DetailsModal'
 import { STYLES } from '../shared/interfaces'
 import { Context } from '../contexts/store'
 import { api } from '../services/api';
+import { useNavigate } from 'react-router-dom';
 
 const CoursCard: React.FC<CoursCardProps> = ({
   id,
@@ -23,6 +24,7 @@ const CoursCard: React.FC<CoursCardProps> = ({
   restplace,
   isEnrolled
 }) => {
+  const navigate = useNavigate();
   const [inscrit, setInscrit] = useState(isEnrolled);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [openDialogDetails, setOpenDialogDetails] = useState(false);
@@ -37,6 +39,7 @@ const CoursCard: React.FC<CoursCardProps> = ({
     if (!inscrit) {
       api.post('/enroll/add', token , {idcours: id }).then(() => {
         console.log("success");
+        console.log("Cours details = ", coursDetails);
       })
     } else {
       api.post('/enroll/delete', token, { idcours: id}).then(() => {
@@ -49,7 +52,6 @@ const CoursCard: React.FC<CoursCardProps> = ({
   }
   };
 
-  //to remove
   const isComplet = Number(restplace) === 0;
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -71,6 +73,7 @@ const CoursCard: React.FC<CoursCardProps> = ({
   };
 
   const handleEditer = () => {
+    navigate("/editCours", { state: { id } });
     handleClose();
   };
 
@@ -87,59 +90,62 @@ const CoursCard: React.FC<CoursCardProps> = ({
   };
 
   return (
-    <>
-      <Card sx={{ width: 450, height: 198, mt: 3, borderRadius: '12px', boxShadow: 0, display: 'flex', justifyContent: 'flex-start', flexDirection: 'column' }}>
-        <CardContent>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography variant="h5" gutterBottom>
-              {STYLES[style]}
-            </Typography>
-            {admin && (
-              <>
-                <IconButton aria-label="plus" size="small" onClick={handleClick}>
-                  <MoreVertIcon />
-                </IconButton>
-                <Menu
-                  anchorEl={anchorEl}
-                  keepMounted
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleDetails}>Détails</MenuItem>
-                  <MenuItem onClick={handleEditer}>Editer</MenuItem>
-                  <MenuItem onClick={handleSupprimer}>Supprimer</MenuItem>
-            </Menu>
-          </>
+      <div
+       className="w-[450px] h-[180px] rounded-lg flex flex-col bg-white p-4 justify-between h-full justify-self-start"
+       >
+          <div
+            className="flex flex-col"
+          >
+            <div className="flex justify-between w-full">
+              <span className="ml-[2px] font-bold">
+                {STYLES[style]}
+              </span>
+              {admin && (
+                <>
+                  <IconButton aria-label="plus" size="small" onClick={handleClick}>
+                    <MoreVertIcon />
+                  </IconButton>
+                  <Menu
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                  >
+                    <MenuItem onClick={handleDetails}>Détails</MenuItem>
+                    <MenuItem onClick={handleEditer}>Editer</MenuItem>
+                    <MenuItem onClick={handleSupprimer}>Supprimer</MenuItem>
+              </Menu>
+            </>
         )}
-      </Box>
-      { niveau && <Chip label={niveau} sx={{ mt: -1, mb: 2 }} />}
-      { prix?.toString() !== "0" && <Chip label={`${prix}€`} sx={{ mt: -1, mb: 2 }} />}
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          mt: 2,
-        }}
+        </div>
+        <div className="mt-3">
+          { niveau && <Chip label={niveau} sx={{ mt: -1, mb: 2, mr: 1, color: 'white' }} color="primary" />}
+          { prix?.toString() !== "0" && <Chip label={`${prix}€`} sx={{ mt: -1, mb: 2 }} />}
+        </div>
+      </div>
+      <div
+        className="flex justify-between items-center"
       >
-        <Box>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <div>
+          <div className="flex items-center">
             <EventIcon fontSize="small" />
-            <Typography variant="subtitle2" sx={{ ml: 1 }}>
+            <span className="ml-1">
               {jsemaine} {jour} {mois}
-            </Typography>
-          </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            </span>
+          </div>
+          <div className="flex items-center">
             <ScheduleIcon fontSize="small" />
-            <Typography variant="subtitle2" sx={{ ml: 1 }}>
+            <span className="ml-1">
               à {heure}, durée {duree}
-            </Typography>
-          </Box>
-        </Box>
-        <Box sx={{ textAlign: 'right' }}>
-          <Typography variant="subtitle2">
-            {isComplet ? '' : `${restplace} places restantes`}
-          </Typography>
+            </span>
+          </div>
+        </div>
+        <div 
+          className="text-right w-1/3 flex flex-col items-center justify-center"
+        >
+          <span>
+            {isComplet ? '' : `${restplace} place${Number(restplace) > 1 ? 's' : ''} restante${Number(restplace) > 1 ? 's' : ''}`}
+          </span>
           <Button
             variant="contained"
             size="small"
@@ -154,18 +160,15 @@ const CoursCard: React.FC<CoursCardProps> = ({
               },
             }}
             onClick={toggleInscription}
-            disabled={isComplet}
+            disabled={isComplet && !inscrit}
           >
             {inscrit ? 'Se désinscrire' : isComplet ? 'Complet' : "S'inscrire"}
           </Button>
-        </Box>
-      </Box>
-    </CardContent>
-  </Card>
- 
+        </div>
+      </div>
   <DeleteModal isOpen={openDialogDelete} setIsOpen={setOpenDialogDelete} action={handleConfirmSupprimer} />
   <DetailsModal isOpen={openDialogDetails} setIsOpen={setOpenDialogDetails} coursDetails={coursDetails} />
-  </>
+    </div>
   );
   };
   

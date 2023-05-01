@@ -30,6 +30,7 @@ const Home: React.FC = () => {
   const HandleSubmitSignin = () => {
 
     api.post('/users/signin', token, {email, password}).then((res) => {
+      console.log("res.data = ", res.data);
       setToken(res.data.token);
       if (res.data.admin === 1)
         setAdmin(true);

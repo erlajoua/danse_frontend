@@ -39,6 +39,15 @@ class Api {
       throw error;
     }
   }
+
+  public async put<T>(url: string, token: string | null, data?: any, config?: AxiosRequestConfig): Promise<any> {
+    try {
+      const response = await this.axiosInstance.put<T>(url, data, this.addBearerToken(token, config));
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export const api = new Api();

@@ -1,5 +1,5 @@
 import AdminHeader from "../components/AdminHeader";
-import { IHeaderOptions } from "../shared/interfaces";
+import { IAdminOptions, IUserOptions } from "../shared/interfaces";
 import AddCoursCard from "../components/AddCoursCard";
 import { useState, useContext } from "react";
 import AddIcon from "@mui/icons-material/Add";
@@ -8,7 +8,12 @@ import { api } from '../services/api'
 import { useNavigate } from "react-router-dom";
 import { NIVEAUX } from '../shared/interfaces'
 import { Context } from '../contexts/store'
-
+import {
+	dateToDayOfMonth,
+	dateToDayOfWeek,
+	dateToMonth,
+	extractTimeFromDate
+} from '../services/utils'
 
 const AddCours = () => {
   const defaultCours = {
@@ -25,51 +30,13 @@ const AddCours = () => {
   const navigate = useNavigate();
   const { token, admin } = useContext(Context);
 
-  const options: IHeaderOptions = {
-    list: true,
+  const adminOptions: IAdminOptions = {
+    cours: true,
+	account: true,
     addCours: false,
+    disconnect: false
   };
 
-  function dateToDayOfWeek(date: Date | null): string {
-    const options: Intl.DateTimeFormatOptions = {
-      weekday: "long",
-    };
-
-    if (date) {
-      const dayOfWeek = date.toLocaleDateString("fr-FR", options);
-      return dayOfWeek.charAt(0).toUpperCase() + dayOfWeek.slice(1);
-    }
-    return "";
-  }
-
-  function dateToDayOfMonth(date: Date | null): number {
-	if (date) {
-	  return date.getDate();
-	}
-	return 0;
-  }
-  
-  function dateToMonth(date: Date | null): string {
-	const options: Intl.DateTimeFormatOptions = {
-	  month: "long",
-	};
-  
-	if (date) {
-	  const month = date.toLocaleDateString("fr-FR", options);
-	  return month.charAt(0).toUpperCase() + month.slice(1);
-	}
-	return "";
-  }
-  
-  function extractTimeFromDate(date: Date | null): string {
-	if (date) {
-		const timeString = date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-		return timeString.substring(0, 5);
-	}
-	return '';
-  }
-  
-  
   const submitAll = async () => {
 	const mandatoryFields = ['date', 'heure', 'style', 'duree', 'nbPlaces'];
 	try {
@@ -103,8 +70,7 @@ const AddCours = () => {
 			'duree': cour.duree,
 			'niveau': cour.niveau,
 			'prix': cour.prix,
-			'nbplace': cour.nbPlaces,
-			'restplace': cour.nbPlaces
+			'nbplace': cour.nbPlaces
 		  });
 		})
 	  );
@@ -118,7 +84,7 @@ const AddCours = () => {
 
   return (
     <div className="body flex items-center flex-col">
-      {admin && <AdminHeader options={options} />}
+      {admin && <AdminHeader options={adminOptions} />}
       <div className="flex mb-4 items-center">
         <span className="mr-2">Ajouter un autre cours</span>
         <AddIcon
