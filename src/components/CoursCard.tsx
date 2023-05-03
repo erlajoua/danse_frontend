@@ -3,6 +3,7 @@ import { Card, CardContent, Typography, Button, Box, Chip, IconButton, Menu, Men
 import EventIcon from '@mui/icons-material/Event';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import TimelapseIcon from '@mui/icons-material/Timelapse';
 import { CoursCardProps } from '../shared/interfaces';
 import DeleteModal from './DeleteModal'
 import DetailsModal from './DetailsModal'
@@ -91,19 +92,19 @@ const CoursCard: React.FC<CoursCardProps> = ({
 
   return (
       <div
-       className="w-[450px] h-[180px] rounded-lg flex flex-col bg-white p-4 justify-between h-full justify-self-start"
+       className="h-[190px] w-[425px] shadow-md rounded-lg flex flex-col bg-white justify-between justify-self-start"
        >
           <div
-            className="flex flex-col"
+            className="flex flex-col rounded-t-lg"
           >
-            <div className="flex justify-between w-full">
-              <span className="ml-[2px] font-bold">
+            <div className="flex justify-between w-full bg-[#f46ef6] px-2 py-1 items-center rounded-t-lg shadow-lg">
+              <span className="ml-[2px] font-bold text-white">
                 {STYLES[style]}
               </span>
               {admin && (
                 <>
-                  <IconButton aria-label="plus" size="small" onClick={handleClick}>
-                    <MoreVertIcon />
+                  <IconButton aria-label="plus" size="small" sx={{ color: 'white', height: 10}} onClick={handleClick}>
+                    <MoreVertIcon/>
                   </IconButton>
                   <Menu
                     anchorEl={anchorEl}
@@ -118,32 +119,38 @@ const CoursCard: React.FC<CoursCardProps> = ({
             </>
         )}
         </div>
-        <div className="mt-3">
-          { niveau && <Chip label={niveau} sx={{ mt: -1, mb: 2, mr: 1, color: 'white' }} color="primary" />}
-          { prix?.toString() !== "0" && <Chip label={`${prix}€`} sx={{ mt: -1, mb: 2 }} />}
+        <div className="mt-4 pl-2">
+          { niveau && <Chip label={niveau} sx={{ height: 25, mt: -1, mb: 2, mr: 1, color: 'black', backgroundColor: "#fea4ff" }}  />}
+          { prix?.toString() !== "0" && <Chip label={`${prix}€`} sx={{ height: 25, mt: -1, mb: 2 }} />}
         </div>
       </div>
       <div
-        className="flex justify-between items-center"
+        className="flex justify-between items-end p-2 text-sm"
       >
-        <div>
+        <div className="flex flex-col h-full justify-around">
           <div className="flex items-center">
-            <EventIcon fontSize="small" />
+            <EventIcon fontSize="small" style={{ opacity: 0.6 }} />
             <span className="ml-1">
               {jsemaine} {jour} {mois}
             </span>
           </div>
           <div className="flex items-center">
-            <ScheduleIcon fontSize="small" />
+            <ScheduleIcon fontSize="small" style={{ opacity: 0.6 }} />
             <span className="ml-1">
-              à {heure}, durée {duree}
+              {heure}
+            </span>
+          </div>
+          <div className="flex items-center">
+            <TimelapseIcon fontSize="small" style={{ opacity: 0.6 }} />
+            <span className="ml-1">
+              {duree}
             </span>
           </div>
         </div>
         <div 
           className="text-right w-1/3 flex flex-col items-center justify-center"
         >
-          <span>
+          <span className="mb-[1px]">
             {isComplet ? '' : `${restplace} place${Number(restplace) > 1 ? 's' : ''} restante${Number(restplace) > 1 ? 's' : ''}`}
           </span>
           <Button
@@ -151,12 +158,13 @@ const CoursCard: React.FC<CoursCardProps> = ({
             size="small"
             sx={{
               textTransform: 'none',
-              mt: 1,
-              backgroundColor: inscrit ? '#d9d9d9' : 'primary.main',
+              display: 'flex',
+              alignItems: 'center',
+              backgroundColor: inscrit ? 'rgba(0, 0, 0, 0.08)' : 'primary.main',
               color: inscrit ? 'black' : 'white',
               width: '100%',
               '&:hover': {
-                backgroundColor: inscrit ? '#d9d9d9' : 'primary.dark',
+                backgroundColor: inscrit ? '#c7bbc9' : 'primary.dark',
               },
             }}
             onClick={toggleInscription}

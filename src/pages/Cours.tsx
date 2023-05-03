@@ -7,35 +7,40 @@ import AdminHeader from '../components/AdminHeader'
 import { Context } from '../contexts/store'
 import UserHeader from '../components/UserHeader';
 import { IUserOptions } from '../shared/interfaces';
+import { useNavigate } from 'react-router-dom';
 
 const Cours = () => {
   const [cours, setCours] = useState<Array<CoursCardProps>>([]);
   const { socket, token, admin } = useContext(Context);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    if (!token)
+      navigate('/')
+  })
 
   const userOptions: IUserOptions = {
-    cours: false,
+    cours: true,
     account: true,
     disconnect: true
   };
+
+  const adminOptions: IAdminOptions = {
+		cours: true,
+    account: true,
+		addCours: true,
+    disconnect: true
+	}
 
   const fetchCours = async () => {
     try {
       const response = await api.get(`/cours`, token);
       const data = response.data;
-      console.log("Liste des cours = ", response.data);
       setCours(data);
     } catch (error) {
       console.error('Erreur lors de la récupération des cours:', error);
     }
   };
-
-	const adminOptions: IAdminOptions = {
-		cours: false,
-    account: true,
-		addCours: true,
-    disconnect: true
-	}
 
   useEffect(() => {
     fetchCours();
@@ -47,10 +52,7 @@ const Cours = () => {
 
   return (
     <div className="body w-full flex flex-col items-center">
-      {admin ? (
-        <AdminHeader options={adminOptions} />
-      ) : (<UserHeader  options={userOptions} />)}
-      <div className="flex flex-wrap justify-center w-full gap-4">
+      <div className="flex flex-wrap justify-center w-full gap-6">
         {cours.map((cour, index) => (
             <CoursCard
               key={index}

@@ -1,5 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap');
+
+* {
+    font-family: 'Manrope', sans-serif;
+}
+
 .body {
-	background-color: rgba(249, 223, 239, 0.504);
-	padding: 12px;
+	/* background-color: #f4e9f5; */
+    background-color: white;
 	min-height: 100vh;
+}
+
+.map-container {
+    width: 600px;
+    height: 450px;
+    border-radius: 12px!important;
+}
+
+.mapboxgl-ctrl-logo {
+    display: none!important;
 }

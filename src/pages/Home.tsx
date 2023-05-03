@@ -18,7 +18,7 @@ const Home: React.FC = () => {
   const { setToken, setAdmin, token } = useContext(Context);
 
   useEffect(() => {
-    if (token)
+  if (token)
       navigate('/cours');
   }, [])
 
@@ -32,6 +32,7 @@ const Home: React.FC = () => {
     api.post('/users/signin', token, {email, password}).then((res) => {
       console.log("res.data = ", res.data);
       setToken(res.data.token);
+      localStorage.setItem('token', res.data.token);
       if (res.data.admin === 1)
         setAdmin(true);
       navigate('/cours');

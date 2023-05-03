@@ -1,7 +1,7 @@
 import AdminHeader from "../components/AdminHeader";
 import { IAdminOptions, IUserOptions } from "../shared/interfaces";
 import AddCoursCard from "../components/AddCoursCard";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import {Button} from '@mui/material'
 import { api } from '../services/api'
@@ -30,11 +30,18 @@ const AddCours = () => {
   const navigate = useNavigate();
   const { token, admin } = useContext(Context);
 
+  useEffect(() => {
+	if (!token)
+		navigate('/');
+	if (admin === false)
+		navigate('/cours');
+  }, [])
+
   const adminOptions: IAdminOptions = {
     cours: true,
 	account: true,
-    addCours: false,
-    disconnect: false
+    addCours: true,
+    disconnect: true
   };
 
   const submitAll = async () => {
@@ -84,8 +91,7 @@ const AddCours = () => {
 
   return (
     <div className="body flex items-center flex-col">
-      {admin && <AdminHeader options={adminOptions} />}
-      <div className="flex mb-4 items-center">
+      <div className="flex mb-4 items-center cursor-pointer">
         <span className="mr-2">Ajouter un autre cours</span>
         <AddIcon
           onClick={() => {

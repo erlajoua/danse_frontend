@@ -1,0 +1,18 @@
+.header-item {
+	border-style: solid;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+	border-color: #f46ef6;
+	display: flex;
+	cursor: pointer;
+	align-items: center;
+	justify-content: center;
+}
+
+.header-item:hover {
+	background-color: '#d148d4'
+}
+
+.header-item:active {
+	background-color: '#bbb'
+}

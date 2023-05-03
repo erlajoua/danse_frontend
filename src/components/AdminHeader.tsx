@@ -1,11 +1,13 @@
-import { AppBar, Toolbar, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Button } from '@mui/material';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useContext } from 'react';
 import { IAdminOptions } from '../shared/interfaces'
 import { Context } from '../contexts/store'
+import './Header.css'
 
 const AdminHeader = ({options}: {options: IAdminOptions}) => {
 	const navigate = useNavigate();
+	const location = useLocation();
 	const { setToken } = useContext(Context);
 
 	const addCours = () => {
@@ -22,19 +24,28 @@ const AdminHeader = ({options}: {options: IAdminOptions}) => {
 
 	const disconnect = () => {
 		setToken(null);
+		localStorage.removeItem('token');
+		console.log("will navigate");
 		navigate('/');
+		console.log("has navigate");
+	}
+
+	const infos = () => {
+		navigate('/infos');
 	}
 
 	return (
-		<div style={{width: '100%'}}>
-			<AppBar position="static" sx={{ marginBottom: 3 }}>
-				<Toolbar>
-					{ options.cours && <Button onClick={list} color="inherit">Liste de cours</Button> }
-					{ options.account && <Button onClick={account} color="inherit">Mon compte</Button> }
-					{ options.addCours && <Button onClick={addCours} color="inherit">Ajouter un cours</Button> }
-					{ options.disconnect && <Button onClick={disconnect} color="inherit">Déconnexion</Button> }
-				</Toolbar>
-			</AppBar>
+		<div className="w-full mb-4">
+			<div className="h-[50px] mb-3 flex justify-around shadow-lg">
+				<div style={{display: 'flex', gap: 20, justifyContent: 'flex-end'}}>
+					<div className="header-item"  style={{ borderBottom: location.pathname === '/cours' ? '4px solid #f46ef6' : '', marginTop: location.pathname === '/cours' ? '4px' : '', borderRadius: 0}} onClick={list} color="inherit">Liste de cours</div>
+					{ options.addCours && <div className="header-item" style={{ borderBottom: location.pathname === '/addCours' ? '4px solid #f46ef6' : '', marginTop: location.pathname === '/addCours' ? '4px' : '', borderRadius: 0}} onClick={addCours} color="inherit">Ajouter un cours</div> }
+					<div className="header-item" style={{ borderBottom: location.pathname === '/infos' ? '4px solid #f46ef6' : '', marginTop: location.pathname === '/infos' ? '4px' : '', borderRadius: 0}} onClick={infos} color="inherit">Infos pratiques</div>
+					<div className="header-item" style={{ borderBottom: location.pathname === '/account' ? '4px solid #f46ef6' : '', marginTop: location.pathname === '/account' ? '4px' : '', borderRadius: 0}} onClick={account} color="inherit">Mon compte</div>
+					<div className="header-item"  style={{ borderBottom: location.pathname === '/disconnect' ? '4px solid #f46ef6' : '', marginTop: location.pathname === '/disconnect' ? '4px' : '', borderRadius: 0}} onClick={disconnect} color="inherit">Déconnexion</div>
+			
+				</div>
+			</div>
 	  </div>
 	)
 }

@@ -36,7 +36,7 @@ const AddCoursCard = ({
   }
 
   return (
-    <div className=" flex items-center justify-center flex-col gap-4 bg-white rounded-lg p-8 w-auto relative">
+    <div className=" flex items-center  shadow-lg justify-center flex-col gap-4 bg-white rounded-lg p-8 w-auto relative">
       {cours.length > 1 && (
         <CloseIcon
           className="absolute top-4 right-4 cursor-pointer"
