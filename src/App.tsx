@@ -12,8 +12,7 @@ import InfosPratiques from './pages/InfosPratiques';
 import EditCours from './pages/EditCours';
 import { api } from './services/api';
 import UserAccount from './pages/UserAccount';
-import AdminHeader from './components/AdminHeader';
-import { IAdminOptions } from './shared/interfaces';
+import Header from './components/Header';
 
 const theme = createTheme({
   palette: {
@@ -27,13 +26,6 @@ const App: React.FC = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
   const [admin, setAdmin] = useState<boolean>(false);
-
-  const adminOptions: IAdminOptions = {
-		cours: true,
-    account: true,
-		addCours: true,
-    disconnect: true
-	}
 
   useEffect(() => {
     const socketInstance: Socket = io(`${process.env.REACT_APP_API_URL}`, {
@@ -64,7 +56,7 @@ const App: React.FC = () => {
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <Context.Provider value={{token, socket, admin, setAdmin, setToken}}>
-        { token && <AdminHeader options={adminOptions} />}
+        { token && <Header />}
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/addCours" element={<AddCours />} />

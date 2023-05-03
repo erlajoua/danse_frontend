@@ -1,5 +1,3 @@
-import AdminHeader from "../components/AdminHeader";
-import { IAdminOptions, IUserOptions } from "../shared/interfaces";
 import AddCoursCard from "../components/AddCoursCard";
 import { useState, useContext, useEffect } from "react";
 import AddIcon from "@mui/icons-material/Add";
@@ -36,13 +34,6 @@ const AddCours = () => {
 	if (admin === false)
 		navigate('/cours');
   }, [])
-
-  const adminOptions: IAdminOptions = {
-    cours: true,
-	account: true,
-    addCours: true,
-    disconnect: true
-  };
 
   const submitAll = async () => {
 	const mandatoryFields = ['date', 'heure', 'style', 'duree', 'nbPlaces'];

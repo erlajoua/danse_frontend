@@ -101,7 +101,7 @@ const CoursCard: React.FC<CoursCardProps> = ({
               <span className="ml-[2px] font-bold text-white">
                 {STYLES[style]}
               </span>
-              {admin && (
+              {admin === true && (
                 <>
                   <IconButton aria-label="plus" size="small" sx={{ color: 'white', height: 10}} onClick={handleClick}>
                     <MoreVertIcon/>

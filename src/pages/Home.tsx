@@ -33,8 +33,7 @@ const Home: React.FC = () => {
       console.log("res.data = ", res.data);
       setToken(res.data.token);
       localStorage.setItem('token', res.data.token);
-      if (res.data.admin === 1)
-        setAdmin(true);
+      setAdmin(res.data.admin === 1 ? true : false);
       navigate('/cours');
     }).catch(err => {
       alert('Email or password incorrect');

@@ -2,30 +2,14 @@ import { useEffect, useContext, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Context } from '../contexts/store';
 import mapboxgl from 'mapbox-gl'; 
-import AdminHeader from '../components/AdminHeader';
-import UserHeader from '../components/UserHeader';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
-import { IUserOptions, IAdminOptions } from '../shared/interfaces';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiZXJsYWpvdWEiLCJhIjoiY2xoNWdvOXpyMXphejNyb3hnMWlsZHZyMyJ9.65OKcKmokJv-wPfa9Xq-Eg';
  
 const InfosPratiques = () => {
 	const navigate = useNavigate();
 	const { token, admin } = useContext(Context);
-
-	const userOptions: IUserOptions = {
-		cours: true,
-		account: true,
-		disconnect: true
-	  };
-	
-	  const adminOptions: IAdminOptions = {
-		cours: true,
-		account: true,
-		addCours: true,
-		disconnect: true
-	}
 
 	const mapContainer = useRef<any>(null);
 	const map = useRef<any>(null);

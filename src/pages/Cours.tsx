@@ -1,12 +1,9 @@
 import { useEffect, useState, useContext } from 'react';
-import { CoursCardProps, IAdminOptions } from '../shared/interfaces';
+import { CoursCardProps } from '../shared/interfaces';
 import CoursCard from '../components/CoursCard';
 import { api } from '../services/api'
 import './Cours.css';
-import AdminHeader from '../components/AdminHeader'
 import { Context } from '../contexts/store'
-import UserHeader from '../components/UserHeader';
-import { IUserOptions } from '../shared/interfaces';
 import { useNavigate } from 'react-router-dom';
 
 const Cours = () => {
@@ -18,19 +15,6 @@ const Cours = () => {
     if (!token)
       navigate('/')
   })
-
-  const userOptions: IUserOptions = {
-    cours: true,
-    account: true,
-    disconnect: true
-  };
-
-  const adminOptions: IAdminOptions = {
-		cours: true,
-    account: true,
-		addCours: true,
-    disconnect: true
-	}
 
   const fetchCours = async () => {
     try {

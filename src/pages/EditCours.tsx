@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import { Context } from '../contexts/store'
-import AdminHeader from "../components/AdminHeader";
+import Header from "../components/Header";
 import { api } from '../services/api'
 import {
 	InputLabel,
@@ -12,7 +12,7 @@ import {
 	Chip,
 	Button
   } from "@mui/material";
-import { STYLES, NIVEAUX, DUREES, IAdminOptions } from "../shared/interfaces";
+import { STYLES, NIVEAUX, DUREES } from "../shared/interfaces";
 import {
 	DatePicker,
 	TimePicker,
@@ -40,13 +40,6 @@ const EditCours = () => {
     if (!id || !admin)
 		  navigate('/cours');
   }, [])
-
-    const adminOptions: IAdminOptions = {
-      cours: true,
-      account: true,
-      addCours: true,
-      disconnect: true
-    }
 
 	const handleUpdate = async () => {
 		const mandatoryFields = ['date', 'heure', 'style', 'duree', 'nbplace'];

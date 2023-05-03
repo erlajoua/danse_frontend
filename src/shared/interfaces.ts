@@ -1,7 +1,5 @@
 export type {
-	CoursCardProps,
-	IAdminOptions,
-	IUserOptions
+	CoursCardProps
 }
 
 export {
@@ -23,19 +21,6 @@ interface CoursCardProps {
 	prix?: string;
 	restplace: string;
 	isEnrolled: boolean;
-}
-
-interface IAdminOptions {
-	cours: boolean;
-	account: boolean;
-	addCours: boolean;
-	disconnect: boolean;
-}
-
-interface IUserOptions {
-	cours: boolean;
-	account: boolean;
-	disconnect: boolean;
 }
 
 const STYLES: any = {
