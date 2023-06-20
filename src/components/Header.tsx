@@ -41,7 +41,7 @@ const Header = () => {
 					<div className="header-item"  style={{ borderBottom: location.pathname === '/cours' ? '4px solid #f46ef6' : '', marginTop: location.pathname === '/cours' ? '4px' : '', borderRadius: 0}} onClick={list} color="inherit">Liste de cours</div>
 					{ options.addCours === true && <div className="header-item" style={{ borderBottom: location.pathname === '/addCours' ? '4px solid #f46ef6' : '', marginTop: location.pathname === '/addCours' ? '4px' : '', borderRadius: 0}} onClick={addCours} color="inherit">Ajouter un cours</div> }
 					<div className="header-item" style={{ borderBottom: location.pathname === '/infos' ? '4px solid #f46ef6' : '', marginTop: location.pathname === '/infos' ? '4px' : '', borderRadius: 0}} onClick={infos} color="inherit">Infos pratiques</div>
-					<div className="header-item" style={{ borderBottom: location.pathname === '/account' ? '4px solid #f46ef6' : '', marginTop: location.pathname === '/account' ? '4px' : '', borderRadius: 0}} onClick={account} color="inherit">Mon compte</div>
+					{/* <div className="header-item" style={{ borderBottom: location.pathname === '/account' ? '4px solid #f46ef6' : '', marginTop: location.pathname === '/account' ? '4px' : '', borderRadius: 0}} onClick={account} color="inherit">Mon compte</div> */}
 					<div className="header-item"  style={{ borderBottom: location.pathname === '/disconnect' ? '4px solid #f46ef6' : '', marginTop: location.pathname === '/disconnect' ? '4px' : '', borderRadius: 0}} onClick={disconnect} color="inherit">Déconnexion</div>
 			
 				</div>

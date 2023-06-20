@@ -8,9 +8,9 @@ const UserAccount = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-	  if (!token)
 		navigate('/')
-	})
+	//   if (!token)
+	}, [])
 
 	return (
 		<div className="body">
