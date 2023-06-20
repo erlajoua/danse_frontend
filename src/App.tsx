@@ -9,6 +9,7 @@ import Cours from './pages/Cours';
 import AddCours from './pages/AddCours';
 import NotFound from './pages/NotFound';
 import InfosPratiques from './pages/InfosPratiques';
+import ForgotPassword from './pages/ForgotPassword';
 import EditCours from './pages/EditCours';
 import { api } from './services/api';
 import UserAccount from './pages/UserAccount';
@@ -64,6 +65,7 @@ const App: React.FC = () => {
             <Route path="/editCours" element={<EditCours />} />
             <Route path="/infos" element={<InfosPratiques />} />
             <Route path="/account" element={<UserAccount />} />
+            <Route path="/forgot" element={<ForgotPassword />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Context.Provider>

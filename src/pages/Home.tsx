@@ -74,6 +74,10 @@ const Home: React.FC = () => {
     })
   }
 
+  const forgotPassword = () => {
+    navigate("/forgot", { state: { email } });
+  }
+
   const validatePassword = () => {
     if (password !== confirmPassword) {
       setPasswordSameError(true);
@@ -180,6 +184,7 @@ function validateFirstName() {
               onChange={(e) => setPassword(e.target.value)}
               sx={{ mt: 3, minWidth: 280 }}
             />
+            <span onClick={forgotPassword}>Mot de passe oublié?</span>
             <Button variant="contained" color="primary" sx={{ mt: 3 }} onClick={HandleSubmitSignin}>
               Se connecter
             </Button>
