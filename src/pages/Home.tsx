@@ -57,7 +57,6 @@ const Home: React.FC = () => {
   }, [step]);
 
   const checkEmailExists = async (email: string): Promise<void> => {
-    console.log("will check");
     api
       .post("/users/email", token, { email })
       .then((res) => {
@@ -125,8 +124,7 @@ const Home: React.FC = () => {
       return true;
     }
     setPasswordSameError(false);
-    var passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    let passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&/])[A-Za-z\\d@$!%*?&/]{8,}$");
     if (password.match(passwordRegex)) {
       setPasswordError(false);
       return false;
@@ -327,8 +325,7 @@ const Home: React.FC = () => {
             )}
             {passwordError && (
               <FormHelperText error={true}>
-                Le mot de passe doit avoir au moins 8 caractères, 1 maj, 1 min,
-                1 chiffre, 1 caractère spécial
+              Le mot de passe doit contenir +8 caractères, minuscule, majuscule, chiffre, caractère spécial (@,$,!,%,*,?,&,/).
               </FormHelperText>
             )}
             <Button
