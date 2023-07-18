@@ -202,6 +202,7 @@ const Home: React.FC = () => {
           <>
             <Typography variant="h4">Entrez votre email</Typography>
             <TextField
+              autoFocus
               label="E-mail"
               type="email"
               value={email}
@@ -233,6 +234,7 @@ const Home: React.FC = () => {
             />
             <Typography variant="h4">Entrez votre mot de passe</Typography>
             <TextField
+              autoFocus
               label="Mot de passe"
               type="password"
               value={password}
@@ -266,6 +268,7 @@ const Home: React.FC = () => {
             />
             <Typography variant="h4">Inscription</Typography>
             <TextField
+              autoFocus
               label="Prénom"
               type="text"
               value={firstName}
