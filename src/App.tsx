@@ -11,6 +11,7 @@ import NotFound from './pages/NotFound';
 import InfosPratiques from './pages/InfosPratiques';
 import ForgotPassword from './pages/ForgotPassword';
 import EditCours from './pages/EditCours';
+import Users from './pages/Users';
 import { api } from './services/api';
 import UserAccount from './pages/UserAccount';
 import Header from './components/Header';
@@ -27,6 +28,7 @@ const App: React.FC = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
   const [admin, setAdmin] = useState<boolean>(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const socketInstance: Socket = io(`${process.env.REACT_APP_API_URL}`, {
@@ -39,8 +41,13 @@ const App: React.FC = () => {
     if (token) {
       api.get('/users/admin', token).then(res => {
         console.log("res = ", res);
-        if (res.data.admin === 1)
+        if (res.data.admin === 1) {
+          console.log("setAdmin= true :))")
           setAdmin(true);
+          setLoading(false);
+        }
+      }).catch(() => {
+        setLoading(false);
       })
     }
 
@@ -56,8 +63,11 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
+
+        {loading === false && (  
         <Context.Provider value={{token, socket, admin, setAdmin, setToken}}>
         { token && <Header />}
+        <div style={{ minHeight: "calc(100vh - 62px)", overflow: "auto", marginTop: "62px" }}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/addCours" element={<AddCours />} />
@@ -66,9 +76,12 @@ const App: React.FC = () => {
             <Route path="/infos" element={<InfosPratiques />} />
             <Route path="/account" element={<UserAccount />} />
             <Route path="/forgot" element={<ForgotPassword />} />
+            <Route path="/users" element={<Users />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          </div>
         </Context.Provider>
+        )}
       </BrowserRouter>
     </ThemeProvider>
   );
