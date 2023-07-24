@@ -36,7 +36,7 @@ const Cours = () => {
 
   return (
     <div className="body w-full flex flex-col items-center">
-      <div className="flex flex-wrap justify-center w-full gap-6">
+      <div className="flex flex-wrap justify-center w-full gap-6 p-4">
         {cours.map((cour, index) => (
             <CoursCard
               key={index}
