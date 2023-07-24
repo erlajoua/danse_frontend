@@ -40,12 +40,11 @@ const App: React.FC = () => {
 
     if (token) {
       api.get('/users/admin', token).then(res => {
-        console.log("res = ", res);
         if (res.data.admin === 1) {
-          console.log("setAdmin= true :))")
           setAdmin(true);
-          setLoading(false);
+          console.log("finito ?");
         }
+        setLoading(false);
       }).catch(() => {
         setLoading(false);
       })

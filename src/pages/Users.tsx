@@ -26,6 +26,8 @@
     const [sortType, setSortType] = useState(false);
 
     useEffect(() => {
+
+      console.log("test ?");
       if (!token)
         navigate('/');
       if (admin === false)
