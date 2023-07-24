@@ -201,7 +201,7 @@ const AddCoursCard = ({
       </div>
 
       <div className="flex items-center flex-col">
-        <InputLabel className="mb-2">Lien Zoom Visio (optionnel)</InputLabel>
+        <InputLabel className="mb-2">Lien Zoom Visioconférence (optionnel)</InputLabel>
         <TextField
           label="Lien Zoom"
           placeholder="https://zoom.us/......"

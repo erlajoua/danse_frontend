@@ -42,7 +42,6 @@ const Home: React.FC = () => {
 
     const onKeyDown = (e: any) => {
       if (e.key === "Enter") {
-        console.log("step = ", step);
         if (step === 0) buttonEmail?.current?.focus();
         if (step === 1) buttonSignin?.current?.focus();
         if (step === 2) buttonSignup?.current?.focus();

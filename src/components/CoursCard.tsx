@@ -97,11 +97,10 @@ const CoursCard: React.FC<CoursCardProps> = ({
 
   const handleConfirmSupprimer = () => {
     api.post('/cours/delete', token, { idcours: id }).then(() => {
-      console.log("success cours deleted");
+      console.log("OK");
     })
     setOpenDialogDelete(false);
   };
-  console.log("ZoomLink = ", zoomLink);
 
   return (
     <div
@@ -110,14 +109,14 @@ const CoursCard: React.FC<CoursCardProps> = ({
       <div
         className="flex flex-col rounded-t-lg"
       >
-        <div className="flex justify-between w-full bg-[#f46ef6] px-2 py-1 items-center rounded-t-lg shadow-lg">
+        <div className={`flex justify-between w-full ${coursDetails?.zoomLink && coursDetails?.zoomLink !== '' ? 'bg-[#c100c4]' : 'bg-[#f46ef6]'} px-2 py-1 items-center rounded-t-lg shadow-lg`}>
           <div className="flex gap-1 items-center">
             <span className="ml-[2px] font-bold text-white">
               {STYLES[style]}
             </span>
             {coursDetails?.zoomLink && coursDetails?.zoomLink !== '' && (
               <>
-                <span className="font-bold text-white italic"> - VISIO </span>
+                <span className="font-bold text-white italic mr-2"> - VISIOCONFÉRENCE </span>
                 <VisioIcon />
               </>
             )}
@@ -147,7 +146,7 @@ const CoursCard: React.FC<CoursCardProps> = ({
           </div>
           {coursDetails?.zoomLink && coursDetails?.zoomLink !== '' && inscrit && (
             <Button variant="outlined" color="primary" onClick={handleVisio}>
-              REJOINDRE LA VISIO
+              REJOINDRE LA VISIOCONFÉRENCE
             </Button>
           )}
         </div>

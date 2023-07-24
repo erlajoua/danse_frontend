@@ -12,31 +12,29 @@ import Typography from '@mui/material/Typography';
 const steps = [
   {
     label: 'Connexion',
-    description: [`Entrez dans la réunion AU MOINS 10 min avant le début de la classe,`, `afin que je m’assure de la bonne mise en place de votre caméra et vérifier que votre espace au sol est optimal.`],
+    description: [`Entrez dans la réunion AU MOINS 10 min avant le début de la classe.`, `Pour que je m’assure de la bonne mise en place de votre caméra et vérifier que votre espace au sol est optimal.`],
   },
   {
     label: 'Lumière',
     description:
-      ['Réglez la lumière afin que je puisse bien vous voir sur zoom'],
+      ['Réglez la lumière afin que je puisse bien vous voir sur zoom.'],
   },
   {
     label: 'Espace',
-    description: [`Assurez-vous d’avoir assez d’espace au sol quand vous vous allongez avec vos bras ouverts en croix (bougez les meubles si besoin !)`],
+    description: [`Assurez-vous d’avoir assez d’espace au sol quand vous vous allongez avec vos bras ouverts en croix (bougez les meubles si besoin).`],
   },
   {
     label: 'Caméra',
-    description: [`Orientez l’angle de la caméra vers votre corps. Dirigez votre tête vers la caméra et alignez votre colonne vertébrale avec votre caméra. NE dirigez PAS vos pieds vers la caméra.`],
+    description: [`Orientez l’angle de la caméra vers votre corps.`, `Dirigez votre tête vers la caméra, alignez votre colonne vertébrale avec votre caméra.`, `NE dirigez PAS vos pieds vers la caméra.`],
   },
   {
     label: 'Vêtements',
-    description: [`Mettez des vêtements confortables et si possible de couleurs claires. En visioconférence, le noir est à proscrire. De même il est préférable de remonter vos cheveux afin d’avoir une NUQUE DÉGAGÉE.`],
+    description: [`Mettez des vêtements confortables et si possible de couleurs claires.`, `En visioconférence, le noir est à proscrire. `, `De même il est préférable de remonter vos cheveux afin d’avoir une NUQUE DÉGAGÉE.`],
   }
 ];
 
 const VisioModal = ({ isOpen, setIsOpen, coursDetails }: { isOpen: boolean, setIsOpen: Function, coursDetails: any }) => {
   const [activeStep, setActiveStep] = useState(0);
-
-  console.log("coursDetails = ", coursDetails);
 
   useEffect(() => {
     setActiveStep(0);
@@ -66,7 +64,7 @@ const VisioModal = ({ isOpen, setIsOpen, coursDetails }: { isOpen: boolean, setI
           >
             <Dialog.Panel className="transform transition-all p-6 bg-white shadow-xl rounded-xl max-w-xl py-8 min-w-[33%]">
               <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900 mb-4 flex justify-center align-items-center">
-                Instructions pour cours en visio
+                Instructions pour cours en visioconférence
               </Dialog.Title>
 
               <Box sx={{ maxWidth: 600, width: '100%' }}>
@@ -81,7 +79,7 @@ const VisioModal = ({ isOpen, setIsOpen, coursDetails }: { isOpen: boolean, setI
                         {step.label}
                       </StepLabel>
                       <StepContent>
-                        <Box className="flex flex-col gap-1">
+                        <Box className="flex flex-col gap-[1px]">
                           {step.description.map((desc, indeex) => {
                             return (
                               <Typography key={indeex}>{desc}</Typography>
@@ -107,7 +105,7 @@ const VisioModal = ({ isOpen, setIsOpen, coursDetails }: { isOpen: boolean, setI
                   {activeStep === steps.length && (
                     <a href={coursDetails.zoomLink} target="_blank" rel="noopener noreferrer">
                       <Button variant="outlined" color="primary">
-                        REJOINDRE LA VISIO
+                        REJOINDRE LA VISIOCONFÉRENCE
                       </Button>
                     </a>
                   )}

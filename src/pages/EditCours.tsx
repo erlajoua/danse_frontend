@@ -73,7 +73,6 @@ const EditCours = () => {
 			'nbplace': cours.nbplace,
       'zoomLink': cours.zoomLink
 		  }).then(() => {
-			console.log("success");
 			navigate('/cours');
 		  }).catch(err => {
 			console.error(err);
@@ -319,7 +318,7 @@ const EditCours = () => {
       </div>
 
     <div className="flex items-center flex-col">
-        <InputLabel className="mb-2">Lien Zoom Visio (optionnel)</InputLabel>
+        <InputLabel className="mb-2">Lien Zoom Visioconférence (optionnel)</InputLabel>
         <TextField
           label="Lien Zoom"
           placeholder="https://zoom.us/......"
