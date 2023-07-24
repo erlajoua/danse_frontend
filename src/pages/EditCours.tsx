@@ -70,7 +70,8 @@ const EditCours = () => {
 			'duree': cours.duree,
 			'niveau': cours.niveau,
 			'prix': cours.prix,
-			'nbplace': cours.nbplace
+			'nbplace': cours.nbplace,
+      'zoomLink': cours.zoomLink
 		  }).then(() => {
 			console.log("success");
 			navigate('/cours');
@@ -144,7 +145,6 @@ const EditCours = () => {
 	  
 	useEffect(() => {
 		api.get(`/cours/${id}`, token).then((response) => {
-			console.log("heure = ", response.data.heure);
 			const dateheure: Date | null = createDateFromInfo(response.data.jour, response.data.mois, response.data.heure);
 			setCours({
 				...response.data,
@@ -161,7 +161,7 @@ const EditCours = () => {
 
 	return (
 		<div className="body flex items-center flex-col">
-<div className=" flex items-center justify-center flex-col gap-4 bg-white rounded-lg p-8 w-[400px] relative">
+<div className=" flex items-center justify-center flex-col gap-4 bg-white rounded-lg p-8 w-[400px] relative shadow-lg">
 			<div className="flex gap-2">
         <div>
           <InputLabel id="style-label">Style</InputLabel>
@@ -317,7 +317,22 @@ const EditCours = () => {
           </div>
         </div>
       </div>
-			<Button
+
+    <div className="flex items-center flex-col">
+        <InputLabel className="mb-2">Lien Zoom Visio (optionnel)</InputLabel>
+        <TextField
+          label="Lien Zoom"
+          placeholder="https://zoom.us/......"
+          type="text"
+          value={cours.zoomLink}
+          onChange={(event) => {
+            handleChange(event.target.value, "zoomLink");
+          }}
+          sx={{ minWidth: 280 }}
+        />
+      </div>
+		</div>
+    <Button
 			variant="contained"
 			color="primary"
 			sx={{mt: 2}}
@@ -325,7 +340,6 @@ const EditCours = () => {
 		>
 			Editer
 		</Button>
-		</div>
 		</div>
 	)
 }

@@ -120,7 +120,7 @@ const AddCoursCard = ({
             ampm={false}
             openTo="hours"
             views={["hours", "minutes"]}
-            sx={{ width: 100 }}
+            sx={{ width: 120 }}
           />
         </LocalizationProvider>
       </div>
@@ -197,6 +197,21 @@ const AddCoursCard = ({
             <span className="ml-1">€</span>
           </div>
         </div>
+
+      </div>
+
+      <div className="flex items-center flex-col">
+        <InputLabel className="mb-2">Lien Zoom Visio (optionnel)</InputLabel>
+        <TextField
+          label="Lien Zoom"
+          placeholder="https://zoom.us/......"
+          type="text"
+          value={cours[index].zoomLink}
+          onChange={(event) => {
+            handleChange(event.target.value, "zoomLink");
+          }}
+          sx={{ minWidth: 280 }}
+        />
       </div>
     </div>
   );

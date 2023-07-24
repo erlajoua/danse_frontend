@@ -21,6 +21,7 @@ interface CoursCardProps {
 	prix?: string;
 	restplace: string;
 	isEnrolled: boolean;
+	zoomLink?: string;
 }
 
 const STYLES: any = {

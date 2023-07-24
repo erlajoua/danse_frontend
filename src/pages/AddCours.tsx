@@ -22,6 +22,7 @@ const AddCours = () => {
     duree: "",
     nbPlaces: 1,
     prix: 0,
+	zoomLink: ''
   };
 
   const [cours, setCours] = useState<any>([defaultCours]);
@@ -68,7 +69,8 @@ const AddCours = () => {
 			'duree': cour.duree,
 			'niveau': cour.niveau,
 			'prix': cour.prix,
-			'nbplace': cour.nbPlaces
+			'nbplace': cour.nbPlaces,
+			'zoomLink': cour.zoomLink
 		  });
 		})
 	  );
@@ -83,12 +85,9 @@ const AddCours = () => {
   return (
     <div className="body flex items-center flex-col">
       <div className="flex mb-4 items-center cursor-pointer">
-        <span className="mr-2">Ajouter un autre cours</span>
-        <AddIcon
-          onClick={() => {
+        <Button variant="outlined" className="mr-2"           onClick={() => {
             setCours((prev: any) => [...prev, defaultCours]);
-          }}
-        />
+          }}>Ajouter un autre cours</Button>
       </div>
       <div className="flex flex-wrap gap-8 justify-center">
         {cours?.map((cour: any, index: number) => {

@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { Card, CardContent, Typography, Button, Box, Chip, IconButton, Menu, MenuItem } from '@mui/material';
+import React, { useState, useContext, useEffect } from 'react';
+import { Button, Chip, IconButton, Menu, MenuItem, Box } from '@mui/material';
 import EventIcon from '@mui/icons-material/Event';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -7,10 +7,12 @@ import TimelapseIcon from '@mui/icons-material/Timelapse';
 import { CoursCardProps } from '../shared/interfaces';
 import DeleteModal from './DeleteModal'
 import DetailsModal from './DetailsModal'
+import VisioModal from './VisioModal'
 import { STYLES } from '../shared/interfaces'
 import { Context } from '../contexts/store'
 import { api } from '../services/api';
 import { useNavigate } from 'react-router-dom';
+import VisioIcon from '../icons/VisioIcon';
 
 const CoursCard: React.FC<CoursCardProps> = ({
   id,
@@ -23,12 +25,14 @@ const CoursCard: React.FC<CoursCardProps> = ({
   niveau,
   prix,
   restplace,
+  zoomLink,
   isEnrolled
 }) => {
   const navigate = useNavigate();
   const [inscrit, setInscrit] = useState(isEnrolled);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [openDialogDetails, setOpenDialogDetails] = useState(false);
+  const [openDialogVisio, setOpenDialogVisio] = useState(false);
   const [openDialogDelete, setOpenDialogDelete] = useState(false);
   const [coursDetails, setCoursDetails] = useState<any>(null);
   const { token, admin } = useContext(Context);
@@ -37,20 +41,20 @@ const CoursCard: React.FC<CoursCardProps> = ({
     setInscrit(prev => !prev);
     try {
 
-    if (!inscrit) {
-      api.post('/enroll/add', token , {idcours: id }).then(() => {
-        console.log("success");
-        console.log("Cours details = ", coursDetails);
-      })
-    } else {
-      api.post('/enroll/delete', token, { idcours: id}).then(() => {
-        console.log("success");
-      })
+      if (!inscrit) {
+        api.post('/enroll/add', token, { idcours: id }).then(() => {
+          console.log("success");
+          console.log("Cours details = ", coursDetails);
+        })
+      } else {
+        api.post('/enroll/delete', token, { idcours: id }).then(() => {
+          console.log("success");
+        })
+      }
     }
-  }
-  catch {
-    setInscrit(prev => !prev)
-  }
+    catch {
+      setInscrit(prev => !prev)
+    }
   };
 
   const isComplet = Number(restplace) === 0;
@@ -63,14 +67,22 @@ const CoursCard: React.FC<CoursCardProps> = ({
     setAnchorEl(null);
   };
 
-  const handleDetails = () => {
+  useEffect(() => {
     api.get(`/cours/${id}`, token).then((response) => {
       setCoursDetails(response.data);
-      setOpenDialogDetails(true);
-      handleClose();
     }).catch((error) => {
       console.error(error);
     });
+  }, [])
+
+  const handleVisio = () => {
+    setOpenDialogVisio(true);
+    handleClose();
+  };
+
+  const handleDetails = () => {
+    setOpenDialogDetails(true);
+    handleClose();
   };
 
   const handleEditer = () => {
@@ -84,45 +96,62 @@ const CoursCard: React.FC<CoursCardProps> = ({
   };
 
   const handleConfirmSupprimer = () => {
-    api.post('/cours/delete', token, {idcours: id}).then(() => {
+    api.post('/cours/delete', token, { idcours: id }).then(() => {
       console.log("success cours deleted");
     })
     setOpenDialogDelete(false);
   };
+  console.log("ZoomLink = ", zoomLink);
 
   return (
+    <div
+      className="h-[200px] w-[425px] shadow-md rounded-lg flex flex-col bg-white justify-between justify-self-start"
+    >
       <div
-       className="h-[190px] w-[425px] shadow-md rounded-lg flex flex-col bg-white justify-between justify-self-start"
-       >
-          <div
-            className="flex flex-col rounded-t-lg"
-          >
-            <div className="flex justify-between w-full bg-[#f46ef6] px-2 py-1 items-center rounded-t-lg shadow-lg">
-              <span className="ml-[2px] font-bold text-white">
-                {STYLES[style]}
-              </span>
-              {admin === true && (
-                <>
-                  <IconButton aria-label="plus" size="small" sx={{ color: 'white', height: 10}} onClick={handleClick}>
-                    <MoreVertIcon/>
-                  </IconButton>
-                  <Menu
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
-                  >
-                    <MenuItem onClick={handleDetails}>Détails</MenuItem>
-                    <MenuItem onClick={handleEditer}>Editer</MenuItem>
-                    <MenuItem onClick={handleSupprimer}>Supprimer</MenuItem>
+        className="flex flex-col rounded-t-lg"
+      >
+        <div className="flex justify-between w-full bg-[#f46ef6] px-2 py-1 items-center rounded-t-lg shadow-lg">
+          <div className="flex gap-1 items-center">
+            <span className="ml-[2px] font-bold text-white">
+              {STYLES[style]}
+            </span>
+            {coursDetails?.zoomLink && coursDetails?.zoomLink !== '' && (
+              <>
+                <span className="font-bold text-white italic"> - VISIO </span>
+                <VisioIcon />
+              </>
+            )}
+          </div>
+          {admin === true && (
+            <>
+              <IconButton aria-label="plus" size="small" sx={{ color: 'white', height: 10 }} onClick={handleClick}>
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleDetails}>Détails</MenuItem>
+                <MenuItem onClick={handleEditer}>Editer</MenuItem>
+                <MenuItem onClick={handleSupprimer}>Supprimer</MenuItem>
               </Menu>
             </>
-        )}
+          )}
         </div>
-        <div className="mt-4 pl-2">
-          { niveau && <Chip label={niveau} sx={{ height: 25, mt: -1, mb: 2, mr: 1, color: 'black', backgroundColor: "#fea4ff" }}  />}
-          { prix?.toString() !== "0" && <Chip label={`${prix}€`} sx={{ height: 25, mt: -1, mb: 2 }} />}
+        <div className="mt-4 pl-2 flex flex-col items-start">
+          <div>
+            {niveau && <Chip label={niveau} sx={{ height: 25, mt: -1, mb: 2, mr: 1, color: 'black', backgroundColor: "#fea4ff" }} />}
+            {prix?.toString() !== "0" && <Chip label={`${prix}€`} sx={{ height: 25, mt: -1, mb: 2 }} />}
+          </div>
+          {coursDetails?.zoomLink && coursDetails?.zoomLink !== '' && inscrit && (
+            <Button variant="outlined" color="primary" onClick={handleVisio}>
+              REJOINDRE LA VISIO
+            </Button>
+          )}
         </div>
+
       </div>
       <div
         className="flex justify-between items-end p-2 text-sm"
@@ -147,7 +176,7 @@ const CoursCard: React.FC<CoursCardProps> = ({
             </span>
           </div>
         </div>
-        <div 
+        <div
           className="text-right w-1/3 flex flex-col items-center justify-center"
         >
           <span className="mb-[1px]">
@@ -174,10 +203,11 @@ const CoursCard: React.FC<CoursCardProps> = ({
           </Button>
         </div>
       </div>
-  <DeleteModal isOpen={openDialogDelete} setIsOpen={setOpenDialogDelete} action={handleConfirmSupprimer} />
-  <DetailsModal isOpen={openDialogDetails} setIsOpen={setOpenDialogDetails} coursDetails={coursDetails} />
+      <DeleteModal isOpen={openDialogDelete} setIsOpen={setOpenDialogDelete} action={handleConfirmSupprimer} />
+      <DetailsModal isOpen={openDialogDetails} setIsOpen={setOpenDialogDetails} coursDetails={coursDetails} />
+      <VisioModal isOpen={openDialogVisio} setIsOpen={setOpenDialogVisio} coursDetails={coursDetails} />
     </div>
   );
-  };
-  
-  export default CoursCard;
+};
+
+export default CoursCard;
