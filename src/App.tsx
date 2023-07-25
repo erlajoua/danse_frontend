@@ -30,6 +30,8 @@ const App: React.FC = () => {
   const [admin, setAdmin] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
 
+  console.log("env = ", process.env.REACT_APP_API_URL);
+
   useEffect(() => {
     const socketInstance: Socket = io(`${process.env.REACT_APP_API_URL}`, {
       transports: ['websocket'],
@@ -40,6 +42,7 @@ const App: React.FC = () => {
 
     if (token) {
       api.get('/users/admin', token).then(res => {
+        console.log("test");
         if (res.data.admin === 1) {
           setAdmin(true);
           console.log("finito ?");
@@ -48,6 +51,8 @@ const App: React.FC = () => {
       }).catch(() => {
         setLoading(false);
       })
+    } else {
+      setLoading(false);
     }
 
     return (() => {
