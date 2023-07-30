@@ -43,7 +43,12 @@ const App: React.FC = () => {
         if (res.data.admin === 1)
           setAdmin(true);
         setLoading(false);
-      }).catch(() => {
+      }).catch(err => {
+        console.log("err . repsonse = ", err.response);
+        if (err.response.data.error === 'TOKEN') {
+          console.log("go here");
+          setToken(null);
+        }
         setLoading(false);
       })
     } else {
