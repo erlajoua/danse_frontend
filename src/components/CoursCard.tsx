@@ -13,6 +13,7 @@ import { Context } from '../contexts/store'
 import { api } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import VisioIcon from '../icons/VisioIcon';
+import BuyModal from "./BuyModal/BuyModal";
 
 const CoursCard: React.FC<CoursCardProps> = ({
   id,
@@ -26,7 +27,8 @@ const CoursCard: React.FC<CoursCardProps> = ({
   prix,
   restplace,
   zoomLink,
-  isEnrolled
+   isEnrolled,
+   isDisabled
 }) => {
   const navigate = useNavigate();
   const [inscrit, setInscrit] = useState(isEnrolled);
@@ -35,20 +37,34 @@ const CoursCard: React.FC<CoursCardProps> = ({
   const [openDialogVisio, setOpenDialogVisio] = useState(false);
   const [openDialogDelete, setOpenDialogDelete] = useState(false);
   const [coursDetails, setCoursDetails] = useState<any>(null);
-  const { token, admin } = useContext(Context);
+  const { token, admin, tokens, setTokens } = useContext(Context);
+  const [openBuyModal, setOpenBuyModal] = useState(false);
 
   const toggleInscription = () => {
+    console.log("tokens = ", tokens);
+    if (!inscrit) {
+      if (!tokens) {
+        setOpenBuyModal(true);
+        return;
+      }
+      if (tokens < 0)
+      {
+        setOpenBuyModal(true);
+        return;
+      }
+    }
+
     setInscrit(prev => !prev);
     try {
 
       if (!inscrit) {
-        api.post('/enroll/add', token, { idcours: id }).then(() => {
-          console.log("success");
-          console.log("Cours details = ", coursDetails);
+        api.post('/enroll/add', token, { idcours: id }).then(res => {
+          setTokens(res.data.tokens);
         })
       } else {
-        api.post('/enroll/delete', token, { idcours: id }).then(() => {
-          console.log("success");
+        api.post('/enroll/delete', token, { idcours: id }).then(res => {
+          setTokens(res.data.tokens);
+
         })
       }
     }
@@ -121,7 +137,7 @@ const CoursCard: React.FC<CoursCardProps> = ({
               </>
             )}
           </div>
-          {admin === true && (
+          {admin && (
             <>
               <IconButton aria-label="plus" size="small" sx={{ color: 'white', height: 10 }} onClick={handleClick}>
                 <MoreVertIcon />
@@ -178,8 +194,8 @@ const CoursCard: React.FC<CoursCardProps> = ({
         <div
           className="text-right w-1/3 flex flex-col items-center justify-center"
         >
-          <span className="mb-[1px]">
-            {isComplet ? '' : `${restplace} place${Number(restplace) > 1 ? 's' : ''} restante${Number(restplace) > 1 ? 's' : ''}`}
+          <span className="mb-[1px] truncate">
+            {isDisabled ? 'Cours terminé' : isComplet ? '' : `${restplace} place${Number(restplace) > 1 ? 's' : ''} restante${Number(restplace) > 1 ? 's' : ''}`}
           </span>
           <Button
             variant="contained"
@@ -196,7 +212,7 @@ const CoursCard: React.FC<CoursCardProps> = ({
               },
             }}
             onClick={toggleInscription}
-            disabled={isComplet && !inscrit}
+            disabled={(isComplet && !inscrit) || (isDisabled)}
           >
             {inscrit ? 'Se désinscrire' : isComplet ? 'Complet' : "S'inscrire"}
           </Button>
@@ -205,6 +221,7 @@ const CoursCard: React.FC<CoursCardProps> = ({
       <DeleteModal isOpen={openDialogDelete} setIsOpen={setOpenDialogDelete} action={handleConfirmSupprimer} />
       <DetailsModal isOpen={openDialogDetails} setIsOpen={setOpenDialogDetails} coursDetails={coursDetails} />
       <VisioModal isOpen={openDialogVisio} setIsOpen={setOpenDialogVisio} coursDetails={coursDetails} />
+      <BuyModal isOpen={openBuyModal} setIsOpen={setOpenBuyModal} />
     </div>
   );
 };

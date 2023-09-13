@@ -15,6 +15,11 @@ import Users from './pages/Users';
 import { api } from './services/api';
 import UserAccount from './pages/UserAccount';
 import Header from './components/Header';
+import {Elements} from "@stripe/react-stripe-js";
+import { loadStripe } from '@stripe/stripe-js';
+
+
+const stripePromise = loadStripe('pk_test_51GzoBxGRiafjIi0SWAhCPPd7RC5WcTAE5BLdX8m2iQ2S9EhxsgvaSNCfHZfOPeOcsehMfC31BmSr9ppXh7a8uqzH00mG71C9q1');
 
 const theme = createTheme({
   palette: {
@@ -28,7 +33,9 @@ const App: React.FC = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
   const [admin, setAdmin] = useState<boolean>(false);
+  const [tokens, setTokens] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     const socketInstance: Socket = io(`${process.env.REACT_APP_API_URL}`, {
@@ -36,17 +43,21 @@ const App: React.FC = () => {
       upgrade: false
     });
 
+
+    console.log("socketInstance = ", socketInstance);
+
     setSocket(socketInstance);
 
     if (token) {
       api.get('/users/admin', token).then(res => {
+        console.log("res.data =", res.data);
         if (res.data.admin === 1)
           setAdmin(true);
+        setTokens(res.data.tokens);
         setLoading(false);
       }).catch(err => {
         console.log("err . repsonse = ", err.response);
         if (err.response.data.error === 'TOKEN') {
-          console.log("go here");
           setToken(null);
         }
         setLoading(false);
@@ -65,11 +76,12 @@ const App: React.FC = () => {
   }
 
   return (
+      <Elements stripe={stripePromise}>
     <ThemeProvider theme={theme}>
       <BrowserRouter>
 
-        {loading === false && (  
-        <Context.Provider value={{token, socket, admin, setAdmin, setToken}}>
+        {!loading && (
+        <Context.Provider value={{token, socket, admin, setAdmin, setToken, tokens, setTokens}}>
         { token && <Header />}
         <div style={{ minHeight: "calc(100vh - 62px)", overflow: "auto", marginTop: "62px" }}>
           <Routes>
@@ -88,6 +100,7 @@ const App: React.FC = () => {
         )}
       </BrowserRouter>
     </ThemeProvider>
+      </Elements>
   );
 };
 

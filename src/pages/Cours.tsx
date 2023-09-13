@@ -30,6 +30,7 @@ const Cours = () => {
     fetchCours();
 
     socket.on('updateCoursList', () => {
+      console.log("will update cours list !!");
       fetchCours();
     })
   }, []);
@@ -51,6 +52,7 @@ const Cours = () => {
               prix={cour.prix}
               restplace={cour.restplace}
               isEnrolled={cour.isEnrolled}
+              isDisabled={cour.isDisabled}
             />
         ))}
       </div>

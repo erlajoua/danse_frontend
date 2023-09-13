@@ -23,8 +23,8 @@ import {
 	dateToDayOfMonth,
 	dateToDayOfWeek,
 	dateToMonth,
-	extractTimeFromDate
-} from '../services/utils'
+	extractTimeFromDate, monthToNumber
+  } from '../services/utils'
 
 const EditCours = () => {
 	const navigate = useNavigate();
@@ -61,6 +61,19 @@ const EditCours = () => {
 			alert('Tous les champs ne sont pas remplisX');
 			return;
 		  }
+
+		const dateObject = new Date(cours.date);
+		const heureObject = new Date(cours.heure);
+
+		const hours = heureObject.getHours();
+		const minutes = heureObject.getMinutes();
+
+		dateObject.setHours(hours, minutes);
+		dateObject.setDate(dateToDayOfMonth(cours.date));
+		dateObject.setMonth(monthToNumber(dateToMonth(cours.date)));
+
+		console.log("dateObject = ", dateObject);
+
 		  await api.put(`/cours/${id}`, token , {
 			'jour': dateToDayOfMonth(cours.date),
 			'mois': dateToMonth(cours.date),
@@ -71,7 +84,8 @@ const EditCours = () => {
 			'niveau': cours.niveau,
 			'prix': cours.prix,
 			'nbplace': cours.nbplace,
-      'zoomLink': cours.zoomLink
+			'zoomLink': cours.zoomLink,
+		  	'date': dateObject
 		  }).then(() => {
 			navigate('/cours');
 		  }).catch(err => {
@@ -147,8 +161,8 @@ const EditCours = () => {
 			const dateheure: Date | null = createDateFromInfo(response.data.jour, response.data.mois, response.data.heure);
 			setCours({
 				...response.data,
-				date: dateheure,
-				heure: dateheure
+				date: new Date(response.data.date),
+				heure: new Date(response.data.date)
 			});
 		  }).catch((error) => {
 			console.error(error);

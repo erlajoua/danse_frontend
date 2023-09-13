@@ -2,7 +2,8 @@ export {
 	dateToDayOfMonth,
 	dateToDayOfWeek,
 	dateToMonth,
-	extractTimeFromDate
+	extractTimeFromDate,
+	monthToNumber
 }
 
 const dateToDayOfWeek = (date: Date | null): string => {
@@ -35,6 +36,25 @@ const dateToDayOfWeek = (date: Date | null): string => {
 	}
 	return "";
   }
+
+const monthToNumber = (month: string): number => {
+	const monthMap: { [key: string]: number } = {
+		"Janvier": 0,
+		"Février": 1,
+		"Mars": 2,
+		"Avril": 3,
+		"Mai": 4,
+		"Juin": 5,
+		"Juillet": 6,
+		"Août": 7,
+		"Septembre": 8,
+		"Octobre": 9,
+		"Novembre": 10,
+		"Décembre": 11
+	};
+
+	return monthMap[month.charAt(0).toUpperCase() + month.slice(1)];
+}
   
   const extractTimeFromDate = (date: Date | null): string => {
 	if (date) {

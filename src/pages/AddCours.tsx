@@ -10,7 +10,8 @@ import {
 	dateToDayOfMonth,
 	dateToDayOfWeek,
 	dateToMonth,
-	extractTimeFromDate
+	extractTimeFromDate,
+	monthToNumber
 } from '../services/utils'
 
 const AddCours = () => {
@@ -32,7 +33,7 @@ const AddCours = () => {
   useEffect(() => {
 	if (!token)
 		navigate('/');
-	if (admin === false)
+	if (!admin)
 		navigate('/cours');
   }, [])
 
@@ -48,11 +49,11 @@ const AddCours = () => {
 			}
 			if (NIVEAUX[cours[j].style].length > 0)
 				newMandatoryFields.push('niveau');
-	  
+
 		  const allFieldsValid = newMandatoryFields.every((field) => {
 			return cours[j][field] !== undefined && cours[j][field] !== null && cours[j][field] !== '';
 		  });
-	  
+
 		  if (!allFieldsValid) {
 			alert('Tous les champs ne sont pas remplis');
 			return;
@@ -60,6 +61,17 @@ const AddCours = () => {
 	}
 	  await Promise.all(
 		cours.map(async (cour: any) => {
+
+			const dateObject = new Date(cour.date);
+			const heureObject = new Date(cour.heure);
+
+			const hours = heureObject.getHours();
+			const minutes = heureObject.getMinutes();
+
+			dateObject.setHours(hours, minutes);
+			dateObject.setDate(dateToDayOfMonth(cour.date));
+			dateObject.setMonth(monthToNumber(dateToMonth(cour.date)));
+
 		  await api.post('/cours', token , {
 			'jour': dateToDayOfMonth(cour.date),
 			'mois': dateToMonth(cour.date),
@@ -70,7 +82,8 @@ const AddCours = () => {
 			'niveau': cour.niveau,
 			'prix': cour.prix,
 			'nbplace': cour.nbPlaces,
-			'zoomLink': cour.zoomLink
+			'zoomLink': cour.zoomLink,
+		  	'date': dateObject
 		  });
 		})
 	  );
@@ -79,7 +92,7 @@ const AddCours = () => {
 	  console.error(error);
 	}
   };
-  
+
 
 
   return (
@@ -101,7 +114,7 @@ const AddCours = () => {
           );
         })}
       </div>
-	  
+
 		<Button
 			variant="contained"
 			color="primary"

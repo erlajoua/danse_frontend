@@ -1,0 +1,16 @@
+.StripeElement {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.StripeElement--focus {
+    border-color: #424770;
+}
+
+.StripeElement--invalid {
+    border-color: #fa755a;
+}

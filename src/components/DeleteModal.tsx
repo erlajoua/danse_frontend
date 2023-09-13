@@ -1,11 +1,12 @@
 import { useState, Fragment } from 'react';
 import { Button, DialogActions, DialogTitle, DialogContent, DialogContentText } from '@mui/material';
 import { Dialog, Transition } from '@headlessui/react';
+import {useElements, useStripe} from "@stripe/react-stripe-js";
 
 const DeleteModal = ({ isOpen, setIsOpen, action}: {isOpen: any, setIsOpen: any, action: any}) => {
 	return (
 <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={() => {setIsOpen(false)}}>
+        <Dialog as="div" className="relative z-900" onClose={() => {setIsOpen(false)}}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"

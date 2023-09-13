@@ -1,11 +1,13 @@
 export type {
-	CoursCardProps
+	CoursCardProps,
+	Offer
 }
 
 export {
 	STYLES,
 	NIVEAUX,
-	DUREES
+	DUREES,
+	OFFERS
 }
 
 interface CoursCardProps {
@@ -22,6 +24,7 @@ interface CoursCardProps {
 	restplace: string;
 	isEnrolled: boolean;
 	zoomLink?: string;
+	isDisabled: boolean;
 }
 
 const STYLES: any = {
@@ -58,3 +61,23 @@ const STYLES: any = {
 	"4h00",
 	"4h30",
   ];
+
+interface Offer {
+	price: number,
+	numberTokens: number
+}
+
+const OFFERS = [{
+	numberTokens: 1,
+	price: 30,
+	sentence: 'STANDARD'
+},
+	{
+		numberTokens: 3,
+		price: 50,
+		sentence: '12% REDUCTION'
+	}, {
+		numberTokens: 10,
+		price: 100,
+		sentence: '12% REDUCTION'
+	}]
