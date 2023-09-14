@@ -14,11 +14,8 @@ interface CoursCardProps {
 	id?: string;
 	_id?: string;
 	style: string;
-	jsemaine: string;
-	jour: string;
-	mois: string;
-	heure: string;
 	duree: string;
+	date: string;
 	niveau: string;
 	prix?: string;
 	restplace: string;
@@ -69,15 +66,15 @@ interface Offer {
 
 const OFFERS = [{
 	numberTokens: 1,
-	price: 30,
+	price: 13,
 	sentence: 'STANDARD'
 },
 	{
-		numberTokens: 3,
-		price: 50,
-		sentence: '12% REDUCTION'
+		numberTokens: 5,
+		price: 60,
+		sentence: '5€ ÉCONOMISÉ'
 	}, {
 		numberTokens: 10,
-		price: 100,
-		sentence: '12% REDUCTION'
+		price: 110,
+		sentence: '20€ ÉCONOMISÉ'
 	}]

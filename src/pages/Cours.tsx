@@ -30,7 +30,6 @@ const Cours = () => {
     fetchCours();
 
     socket.on('updateCoursList', () => {
-      console.log("will update cours list !!");
       fetchCours();
     })
   }, []);
@@ -43,10 +42,7 @@ const Cours = () => {
               key={index}
               id={cour._id}
               style={cour.style}
-              jsemaine={cour.jsemaine}
-              jour={cour.jour}
-              mois={cour.mois}
-              heure={cour.heure}
+              date={cour.date}
               duree={cour.duree}
               niveau={cour.niveau}
               prix={cour.prix}

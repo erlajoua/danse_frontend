@@ -3,6 +3,7 @@ import { useEffect, useState, useContext } from "react";
 import { Context } from '../contexts/store'
 import Header from "../components/Header";
 import { api } from '../services/api'
+import { parseISO } from 'date-fns';
 import {
 	InputLabel,
 	Grid,
@@ -65,21 +66,15 @@ const EditCours = () => {
 		const dateObject = new Date(cours.date);
 		const heureObject = new Date(cours.heure);
 
-		const hours = heureObject.getHours();
-		const minutes = heureObject.getMinutes();
+		const hours = heureObject.getUTCHours();
+		const minutes = heureObject.getUTCMinutes();
 
-		dateObject.setHours(hours, minutes);
+		dateObject.setUTCHours(hours, minutes);
 		dateObject.setDate(dateToDayOfMonth(cours.date));
 		dateObject.setMonth(monthToNumber(dateToMonth(cours.date)));
 
-		console.log("dateObject = ", dateObject);
-
 		  await api.put(`/cours/${id}`, token , {
-			'jour': dateToDayOfMonth(cours.date),
-			'mois': dateToMonth(cours.date),
-			'heure': extractTimeFromDate(cours.heure),
 			'style': cours.style,
-			'jsemaine': dateToDayOfWeek(cours.date),
 			'duree': cours.duree,
 			'niveau': cours.niveau,
 			'prix': cours.prix,
@@ -100,74 +95,21 @@ const EditCours = () => {
 			setCours({ ...cours, [value]: event });
 	};
 
-	function createDateFromInfo(
-		dayOfMonth: number,
-		month: string,
-		time: string
-	  ): Date | null {
-		const currentDate = new Date();
-		const currentYear = currentDate.getFullYear();
-		const monthNames = [
-		  "Janvier",
-		  "Février",
-		  "Mars",
-		  "Avril",
-		  "Mai",
-		  "Juin",
-		  "Juillet",
-		  "Août",
-		  "Septembre",
-		  "Octobre",
-		  "Novembre",
-		  "Décembre",
-		];
-	  
-		const monthIndex = monthNames.indexOf(month);
-	  
-		if (monthIndex === -1) {
-		  return null;
-		}
-	  
-		const dateCandidateThisYear = new Date(currentYear, monthIndex, dayOfMonth);
-		const dateCandidateNextYear = new Date(
-		  currentYear + 1,
-		  monthIndex,
-		  dayOfMonth
-		);
-		const timeArray = time.split("h");
-	  
-		if (timeArray.length === 2) {
-		  const hours = parseInt(timeArray[0], 10);
-		  const minutes = parseInt(timeArray[1], 10);
-
-		  if (!isNaN(hours) && !isNaN(minutes)) {
-			dateCandidateThisYear.setHours(hours, minutes);
-			dateCandidateNextYear.setHours(hours, minutes);
-		  }
-		}
-	  
-		if (dateCandidateThisYear >= currentDate) {
-		  return dateCandidateThisYear;
-		} else if (dateCandidateNextYear >= currentDate) {
-		  return dateCandidateNextYear;
-		}
-	  
-		return null;
-	  }	  
-
-	  
 	useEffect(() => {
 		api.get(`/cours/${id}`, token).then((response) => {
-			const dateheure: Date | null = createDateFromInfo(response.data.jour, response.data.mois, response.data.heure);
+			const date = parseISO(response.data.date);
+
 			setCours({
 				...response.data,
-				date: new Date(response.data.date),
-				heure: new Date(response.data.date)
+				date,
+				heure: new Date(date.toUTCString().slice(0, -4)).getTime()
 			});
-		  }).catch((error) => {
+		}).catch((error) => {
 			console.error(error);
-		  });
+		});
 	}, []);
+
+
 
 	if (!cours)
 		return <span>Loading...</span>

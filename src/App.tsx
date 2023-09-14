@@ -19,7 +19,7 @@ import {Elements} from "@stripe/react-stripe-js";
 import { loadStripe } from '@stripe/stripe-js';
 
 
-const stripePromise = loadStripe('pk_test_51GzoBxGRiafjIi0SWAhCPPd7RC5WcTAE5BLdX8m2iQ2S9EhxsgvaSNCfHZfOPeOcsehMfC31BmSr9ppXh7a8uqzH00mG71C9q1');
+const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_KEY}`);
 
 const theme = createTheme({
   palette: {
@@ -50,13 +50,11 @@ const App: React.FC = () => {
 
     if (token) {
       api.get('/users/admin', token).then(res => {
-        console.log("res.data =", res.data);
         if (res.data.admin === 1)
           setAdmin(true);
         setTokens(res.data.tokens);
         setLoading(false);
       }).catch(err => {
-        console.log("err . repsonse = ", err.response);
         if (err.response.data.error === 'TOKEN') {
           setToken(null);
         }

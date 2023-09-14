@@ -32,7 +32,7 @@ const Offers = ({setSteps, selectedOffer, setIsOpen, setSelectedOffer}: OffersPr
                 </div>
                     <div className="h-1/2 flex w-full justify-center gap-4">
                 {OFFERS.map((offer, index) => (
-                    <Card key={index} onClick={() => handleOfferChange(index)} className={selectedOffer === offer ? 'selected-offer w-[25%] cursor-pointer' : 'w-[25%] cursor-pointer'}>
+                    <Card key={index} onClick={() => handleOfferChange(index)} className={selectedOffer === offer ? 'selected-offer w-[30%] cursor-pointer' : 'w-[30%] cursor-pointer'}>
                         <CardContent className={"p-1 flex flex-col justify-between h-full items-center"}>
                             <div>
                                 <Typography variant="h6" component="div">
@@ -42,7 +42,7 @@ const Offers = ({setSteps, selectedOffer, setIsOpen, setSelectedOffer}: OffersPr
                                     {`${offer.price}€`}
                                 </Typography>
                             </div>
-                            <Typography className={index === 0 ? 'text-base md:text-lg  text-center text-gray-600  w-full tracking-[-1rem] h-1/2 flex items-center mt-4 justify-center' : 'text-base md:text-lg tracking-[-1rem] w-full text-center text-[#f46ef6] h-1/2 flex items-center justify-center mt-4'}>
+                            <Typography className={index === 0 ? ' truncate text-base md:text-lg  text-center text-gray-600  w-full tracking-[-1rem] h-1/2 flex items-center mt-4 justify-center' : 'truncate  text-base md:text-lg tracking-[-1rem] w-full text-center text-[#f46ef6] h-1/2 flex items-center justify-center mt-4'}>
                                 {`${offer.sentence}`}
                             </Typography>
                         </CardContent>

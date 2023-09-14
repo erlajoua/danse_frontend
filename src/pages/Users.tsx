@@ -27,10 +27,9 @@
 
     useEffect(() => {
 
-      console.log("test ?");
       if (!token)
         navigate('/');
-      if (admin === false)
+      if (!admin)
         navigate('/cours');
 
       api.get<User[]>('/users', token).then(res => {

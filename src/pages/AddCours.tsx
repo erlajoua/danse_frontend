@@ -8,9 +8,7 @@ import { NIVEAUX } from '../shared/interfaces'
 import { Context } from '../contexts/store'
 import {
 	dateToDayOfMonth,
-	dateToDayOfWeek,
 	dateToMonth,
-	extractTimeFromDate,
 	monthToNumber
 } from '../services/utils'
 
@@ -62,22 +60,18 @@ const AddCours = () => {
 	  await Promise.all(
 		cours.map(async (cour: any) => {
 
-			const dateObject = new Date(cour.date);
-			const heureObject = new Date(cour.heure);
+		const dateObject = new Date(cour.date);
+		const heureObject = new Date(cour.heure);
 
-			const hours = heureObject.getHours();
-			const minutes = heureObject.getMinutes();
+		const hours = heureObject.getUTCHours();
+		const minutes = heureObject.getUTCMinutes();
 
-			dateObject.setHours(hours, minutes);
-			dateObject.setDate(dateToDayOfMonth(cour.date));
-			dateObject.setMonth(monthToNumber(dateToMonth(cour.date)));
+		dateObject.setUTCHours(hours, minutes);
+		dateObject.setDate(dateToDayOfMonth(cour.date));
+		dateObject.setMonth(monthToNumber(dateToMonth(cour.date)));
 
 		  await api.post('/cours', token , {
-			'jour': dateToDayOfMonth(cour.date),
-			'mois': dateToMonth(cour.date),
-			'heure': extractTimeFromDate(cour.heure),
 			'style': cour.style,
-			'jsemaine': dateToDayOfWeek(cour.date),
 			'duree': cour.duree,
 			'niveau': cour.niveau,
 			'prix': cour.prix,

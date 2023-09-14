@@ -18,10 +18,7 @@ import BuyModal from "./BuyModal/BuyModal";
 const CoursCard: React.FC<CoursCardProps> = ({
   id,
   style,
-  jsemaine,
-  jour,
-  mois,
-  heure,
+  date,
   duree,
   niveau,
   prix,
@@ -39,6 +36,19 @@ const CoursCard: React.FC<CoursCardProps> = ({
   const [coursDetails, setCoursDetails] = useState<any>(null);
   const { token, admin, tokens, setTokens } = useContext(Context);
   const [openBuyModal, setOpenBuyModal] = useState(false);
+  const parsedDate = parseDate(date);
+  function parseDate(dateStr: string) {
+    const date = new Date(dateStr);
+    const universalDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes());
+
+    return {
+      annee: universalDate.toLocaleString('fr-FR', { year: 'numeric' }),
+      mois: universalDate.toLocaleString('fr-FR', { month: 'long' }),
+      jour: universalDate.toLocaleString('fr-FR', { day: 'numeric' }),
+      jsemaine: universalDate.toLocaleString('fr-FR', { weekday: 'long' }),
+      heure: universalDate.toLocaleString('fr-FR', { hour: '2-digit', minute: '2-digit', hour12: false }).replace(':', 'h'),
+    };
+  }
 
   const toggleInscription = () => {
     console.log("tokens = ", tokens);
@@ -60,11 +70,14 @@ const CoursCard: React.FC<CoursCardProps> = ({
       if (!inscrit) {
         api.post('/enroll/add', token, { idcours: id }).then(res => {
           setTokens(res.data.tokens);
+        }).catch(err => {
+          setInscrit(prev => !prev);
         })
       } else {
         api.post('/enroll/delete', token, { idcours: id }).then(res => {
           setTokens(res.data.tokens);
-
+        }).catch(err => {
+          setInscrit(prev => !prev);
         })
       }
     }
@@ -85,11 +98,12 @@ const CoursCard: React.FC<CoursCardProps> = ({
 
   useEffect(() => {
     api.get(`/cours/${id}`, token).then((response) => {
-      setCoursDetails(response.data);
+      const parsedDate = parseDate(response.data.date);
+      setCoursDetails({ ...response.data, parsedDate });
     }).catch((error) => {
       console.error(error);
     });
-  }, [])
+  }, []);
 
   const handleVisio = () => {
     setOpenDialogVisio(true);
@@ -113,7 +127,6 @@ const CoursCard: React.FC<CoursCardProps> = ({
 
   const handleConfirmSupprimer = () => {
     api.post('/cours/delete', token, { idcours: id }).then(() => {
-      console.log("OK");
     })
     setOpenDialogDelete(false);
   };
@@ -175,13 +188,13 @@ const CoursCard: React.FC<CoursCardProps> = ({
           <div className="flex items-center">
             <EventIcon fontSize="small" style={{ opacity: 0.6 }} />
             <span className="ml-1">
-              {jsemaine} {jour} {mois}
+              {parsedDate.jsemaine} {parsedDate.jour} {parsedDate.mois}
             </span>
           </div>
           <div className="flex items-center">
             <ScheduleIcon fontSize="small" style={{ opacity: 0.6 }} />
             <span className="ml-1">
-              {heure}
+              {parsedDate.heure}
             </span>
           </div>
           <div className="flex items-center">

@@ -21,7 +21,6 @@ const CreditcardForm = ({selectedOffer, setSteps}: CardFormProps) => {
     const [error, setError] = useState<string | null | undefined>(null);
 
     useEffect(() => {
-        console.log("useEffect !!");
         handleAchat();
     }, [])
 
@@ -105,7 +104,7 @@ const CreditcardForm = ({selectedOffer, setSteps}: CardFormProps) => {
                 <span>- {selectedOffer.numberTokens} cours</span>
                 <span>- {selectedOffer.price}€</span>
             </div>
-            <span className={"italic text-[#f46ef6] text-sm mb-1"}>Après cet achat vous obtiendrez les cours sur votre compte que vous pourrez utiliser afin de vous inscrire à un cours.</span>
+            <span className={"italic text-[#f46ef6] text-sm mb-1"}>Après cette opération, vous verrez votre solde de cours affiché sur votre compte.</span>
             <div><form onSubmit={handleSubmit} className={"w-full flex gap-[-10%] flex-col"}>
                 <div className="form-row w-full">
                     <label htmlFor="card-element">
