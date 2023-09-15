@@ -22,7 +22,7 @@ const BuyModal = ({ isOpen, setIsOpen}: {isOpen: any, setIsOpen: any}) => {
                     <div className="fixed inset-0 bg-black bg-opacity-25" />
                 <div className="fixed inset-0 overflow-y-auto h-full">
                     <div className="flex min-h-full items-center justify-center p-4 text-center">
-                            <Dialog.Panel className="h-[450px] w-[35%] transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all flex flex-col justify-between">
+                            <Dialog.Panel className="h-[450px] w-[95%] lg:w-[35%] transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all flex flex-col justify-between">
                                 <Dialog.Title
                                     as="h3"
                                     className="text-lg font-medium leading-6 text-gray-900"
